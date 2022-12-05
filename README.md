@@ -54,3 +54,8 @@ I work at MeshMonitors.io, We make amazing tools (Check it out yo!). I decided n
 
 ### Why did I do this?
 No one has been able to do this, and I wanted to see if I could.
+
+### Credits
+- [OpenAI](https://openai.com/) for creating the API
+- [MeshMonitors.io](https://meshmonitors.io/) for sponsoring this project
+- [FlorianREGAZ](https://github.com/FlorianREGAZ) for the TLS Client
