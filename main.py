@@ -37,8 +37,7 @@ if __name__ == "__main__":
     print(f"{Fore.GREEN}>> Checking if credentials are expired...")
     if expired_creds:
         print(f"{Fore.RED}>> Your credentials are expired." + f" {Fore.GREEN}Attempting to refresh them...")
-        open_ai_auth = Auth.OpenAIAuth(email_address=email, password=password, use_proxy=True,
-                                       proxy="http://127.0.0.0:8080")
+        open_ai_auth = Auth.OpenAIAuth(email_address=email, password=password)
 
         print(f"{Fore.GREEN}>> Credentials have been refreshed.")
         open_ai_auth.begin()
