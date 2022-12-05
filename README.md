@@ -20,8 +20,8 @@ Basically, the script logs in on your behalf, using a TLS client, then grabs the
 ### Shall we get started?
 1. Clone the repository
 2. Install the requirements using `pip install -r requirements.txt`
-3. First, open `config.json` and enter your email and password.
-4. Then, run `main.py` and let the script do the rest.
+3. Open `config.json` and enter your email and password.
+4. Run `main.py` and let the script do the rest.
 
 ### Other notes
 If the token creation process is failing, on `main.py` on line 40
@@ -56,6 +56,5 @@ I work at MeshMonitors.io, We make amazing tools (Check it out yo!). I decided n
 No one has been able to do this, and I wanted to see if I could.
 
 ### Credits
-- [OpenAI](https://openai.com/) for creating the API
-- [MeshMonitors.io](https://meshmonitors.io/) for sponsoring this project
+- [OpenAI](https://openai.com/) for creating the ChatGPT API
 - [FlorianREGAZ](https://github.com/FlorianREGAZ) for the TLS Client
