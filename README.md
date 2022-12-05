@@ -1,9 +1,11 @@
 # PyChatGPT
+*If you want me to maintain this repo, please star ⭐️*
+
 
 I have been looking for a way to interact with the new Chat GPT API, but most of the sources here on github 
 require you to have a Chromium instance running in the background. or by using the Web Inspector to grab Access Token manually.
 
-No more. I have been able to reverse engineer the API and use a TLS client to mimick a real user, allowing the script to login without setting off any bot detection techniques by Auth0
+No more. I have been able to reverse engineer the API and use a TLS client to mimic a real user, allowing the script to login without setting off any bot detection techniques by Auth0
 
 Basically, the script logs in on your behalf, using a TLS client, then grabs the Access Token. It's pretty fast.
 
@@ -48,7 +50,7 @@ First, I'd like to tell you that "just making http" requests is not going to be 
 If you look at the `auth.py` file, there are over nine functions, each one of them is responsible for a different task, and they all
 work together to create a token for you. `allow-redirects` played a huge role in this, as it allowed to navigate through the login process
 
-I work at MeshMonitors.io, We make amazing tools (Check it out yo!). I decided not to spend too much time on this, but here we are, I have been able to reverse engineer the API and use a TLS client to mimick a real user, allowing the script to login without setting off any bot detection techniques by Auth0
+I work at MeshMonitors.io, We make amazing tools (Check it out yo!). I decided not to spend too much time on this, but here we are, I have been able to reverse engineer the API and use a TLS client to mimic a real user, allowing the script to login without setting off any bot detection techniques by Auth0
 
 ### Why did I do this?
 No one has been able to do this, and I wanted to see if I could.
