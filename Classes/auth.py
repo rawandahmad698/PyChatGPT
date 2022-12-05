@@ -389,8 +389,3 @@ class OpenAIAuth:
             print(f"{Fore.GREEN}[OpenAI][9] {Fore.WHITE}All good")
             # Get the session token
             print(response.json())
-
-
-if __name__ == "__main__":
-    auth = OpenAIAuth(email_address="hancher@rawa.dev", password="P200p200@@")
-    auth.begin()
