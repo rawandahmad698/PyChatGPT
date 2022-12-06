@@ -85,7 +85,7 @@ access_token, expiry = OpenAI.Auth.get_access_token()
 is_expired = OpenAI.Auth.token_expired() # Returns True or False
 ```
 ### Other notes
-If the token creation process is failing, on `main.py` on line 40
+If the token creation process is failing:
 1. Try to use a proxy (I recommend using this always)
 2. Don't try to log in too fast. At least wait 10 minutes if you're being rate limited.
 3. If you're still having issues, try to use a VPN. On a VPN, the script should work fine.
