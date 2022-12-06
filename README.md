@@ -21,12 +21,17 @@ Basically, the script logs in on your behalf, using a TLS client, then grabs the
 - [x] Saves the access token to a file, so you don't have to log in again
 - [x] Automatically refreshes the access token when it expires
 - [x] Uses colorama to colorize the output, because why not?
+- [x] HTTP API serving
 
 ### Shall we get started?
 1. Clone the repository
 2. Install the requirements using `pip install -r requirements.txt`
 3. Open `config.json` and enter your email and password.
-4. Run `main.py` and let the script do the rest.
+4. Run `main.py` and let the script do the rest.  
+5. *[optional]* To enable HTTP-API support:
+- Install uvicorn by running `pip install "uvicorn[standard]"`;
+- Start by running: `nohup uvicorn webapi:app --host 0.0.0.0 --reload > log.txt 2>&1 &`. ;
+- Then, access by `GET` method at `http://host:port/{prompt}`. 
 
 ### Other notes
 If the token creation process is failing, on `main.py` on line 40
@@ -34,8 +39,8 @@ If the token creation process is failing, on `main.py` on line 40
 ```python
 Auth.OpenAIAuth(email_address=email, password=password, use_proxy=True, proxy="http://127.0.0.0:8080")
 ```
-2. Don't try to log in too fast. At least wait 10 minutes if you're being rate limited.
-3. If you're still having issues, try to use a VPN. On a VPN, the script should work fine.
+2. Don't try to log in too fast. At least wait 10 minutes if you're being rate limited
+3. If you're still having issues, try to use a VPN. On a VPN, the script should work fine
 ### What's next?
 I'm planning to add a few more features, such as:
 - [ ] A python module that can be imported and used in other projects
