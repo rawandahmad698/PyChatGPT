@@ -1,4 +1,5 @@
 *.json
+!*.example.json
 dist
 venv
 __pycache__
