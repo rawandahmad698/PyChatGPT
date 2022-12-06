@@ -62,7 +62,7 @@ if __name__ == "__main__":
                 print(f"{Fore.RED}>> Access token is missing in /Classes/auth.json.")
                 exit(1)
 
-            user_input = input("You: ")
+            user_input = input("\nYou: ")
             answer, previous_convo = Chat.ask(auth_token=access_token,
                                               prompt=user_input,
                                               previous_convo_id=previous_convo_id)
@@ -76,7 +76,7 @@ if __name__ == "__main__":
                 if previous_convo is not None:
                     previous_convo_id = previous_convo
 
-                print(f"Chat GPT: {answer}")
+                print(f"\n{Fore.GREEN}AI: {answer}")
         except KeyboardInterrupt:
             print(f"{Fore.RED}>> Exiting...")
             exit(1)
