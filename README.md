@@ -2,7 +2,7 @@
 *If you want me to maintain this repo, please star ⭐️*
 
 
-I have been looking for a way to interact with the new Chat GPT API, but most of the sources here on github 
+I have been looking for a way to interact with the new Chat GPT API, but most of the sources here on GitHub 
 require you to have a Chromium instance running in the background. or by using the Web Inspector to grab Access Token manually.
 
 No more. I have been able to reverse engineer the API and use a TLS client to mimic a real user, allowing the script to login without setting off any bot detection techniques by Auth0
