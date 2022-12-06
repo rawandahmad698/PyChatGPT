@@ -31,7 +31,7 @@ def expired_creds() -> bool:
             bool: True if expired, False if not
     """
     try:
-        # Get path using os, it's in ./Classes/auth.json
+        # Get path using os, it's in ./classes/auth.json
         path = os.path.dirname(os.path.abspath(__file__))
         path = os.path.join(path, "auth.json")
 
@@ -53,7 +53,7 @@ def get_access_token() -> str:
             str: The access token
     """
     try:
-        # Get path using os, it's in ./Classes/auth.json
+        # Get path using os, it's in ./classes/auth.json
         path = os.path.dirname(os.path.abspath(__file__))
         path = os.path.join(path, "auth.json")
 
@@ -357,17 +357,17 @@ class OpenAIAuth:
             access_token = re.findall(r"accessToken\":\"(.*)\"", next_data.text)[0]
             access_token = access_token.split('"')[0]
             print(f"{Fore.GREEN}[OpenAI][8] {Fore.WHITE}Access Token: {Fore.GREEN}{access_token}")
-            # Save access_token and an hour from now on ./Classes/auth.json
+            # Save access_token and an hour from now on ./classes/auth.json
             self.save_access_token(access_token=access_token)
 
     @staticmethod
     def save_access_token(access_token: str):
         """
-        Save access_token and an hour from now on ./Classes/auth.json
+        Save access_token and an hour from now on ./classes/auth.json
         :param access_token:
         :return:
         """
-        with open("Classes/auth.json", "w") as f:
+        with open("classes/auth.json", "w") as f:
             f.write(json.dumps({"access_token": access_token, "expires_at": time.time() + 3600}))
         print(f"{Fore.GREEN}[OpenAI][8] {Fore.WHITE}Saved access token")
 

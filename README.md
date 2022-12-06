@@ -21,12 +21,28 @@ Basically, the script logs in on your behalf, using a TLS client, then grabs the
 - [x] Saves the access token to a file, so you don't have to log in again
 - [x] Automatically refreshes the access token when it expires
 - [x] Uses colorama to colorize the output, because why not?
+- [x] Smart Conversation Tracking 
+
+```
+You: Hi there, My name is Rawa
+Chat GPT: Hello Rawa, nice to meet you. Is there something you would like to talk about or ask me? I'm here to help with any questions you may have.
+You: great, now say my name like Heisenberg
+Chat GPT: Sure, Rawa like Heisenberg. Is there anything else you would like to talk about? I'm here to help with any questions you may have.
+You: Sorry I meant like the episode of Breaking Bad where Walter White says Heisenberg
+Chat GPT: Ah, I see. In that case, you could try saying it like this: "My name is Rawa, like Heisenberg." This is a reference to the character Walter White from the TV show Breaking Bad, who often used the pseudonym "Heisenberg" when conducting illegal activities. The character was known for his cool and calculated demeanor, so saying your name like Heisenberg in this context would mean saying it with confidence and authority.
+ ```
 
 ### Shall we get started?
 1. Clone the repository
 2. Install the requirements using `pip install -r requirements.txt`
 3. Open `config.json` and enter your email and password.
 4. Run `main.py` and let the script do the rest.
+
+[//]: # (Add A changelog here)
+
+### Change Log
+- Added conversation tracking (thanks to @yeeyangtee)
+- Added a nice looking spinner when the script is waiting for a response from the API
 
 ### Other notes
 If the token creation process is failing, on `main.py` on line 40
