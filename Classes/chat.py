@@ -10,9 +10,13 @@ import requests
 
 def ask(auth_token: str, prompt, previous_convo_id: str or None) -> Tuple[str, str or None]:
     headers = {
-        "Accept": "application/json",
-        "Authorization": f"Bearer {auth_token}",
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {auth_token}',
+        'Accept': 'text/event-stream',
+        'Referer': 'https://chat.openai.com/chat',
+        'Origin': 'https://chat.openai.com',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15',
+        'X-OpenAI-Assistant-App-Id': ''
     }
     if previous_convo_id is None:
         previous_convo_id = str(uuid.uuid4())
