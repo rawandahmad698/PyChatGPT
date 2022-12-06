@@ -43,8 +43,16 @@ Chat GPT: Ah, I see. In that case, you could try saying it like this: "My name i
 ```
 pip install chatgptpy --upgrade
 ```
-2. That's it!
+That's it!
 
+
+#### Start a CLI session?
+```python
+from pychatgpt import Chat
+
+chat = Chat(email="email", password="password")
+chat.cli_chat()
+```
 ### Usage
 ```python
 from pychatgpt import Chat
