@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Builtins
 import json
 import os
