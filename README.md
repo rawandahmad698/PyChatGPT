@@ -1,10 +1,16 @@
-- PyPI Package is coming 💯
-### Tuesday, December 6, 2022 (Code is tested, working and updated 💯)
-I got reports of OpenAI changing their API method, nothing is changed, they just added some extra headers (Check out ./Classes/chat.py)
+# 🔥 PyChatGPT
+<p align="center"><i>Chatting</i></p>
 
-# PyChatGPT
-*If you want me to maintain this repo, please star ⭐️*
+![Screenshot 1](https://media.discordapp.net/attachments/1038565125482881027/1049255804366237736/image.png)
 
+[//]: # (Italic centred text saying screenshots)
+<p align="center"><i>Creating a token</i></p>
+
+![Screenshot 2](https://media.discordapp.net/attachments/1038565125482881027/1049072247442264094/image.png?width=2468&height=885)
+
+*Like this repo? please star ⭐️*
+
+*💡 If OpenAI change their API, I will fix it as soon as possible, so Watch the repo if you want to be notified*
 
 I have been looking for a way to interact with the new Chat GPT API, but most of the sources here on GitHub 
 require you to have a Chromium instance running in the background. or by using the Web Inspector to grab Access Token manually.
@@ -31,39 +37,63 @@ Chat GPT: Sure, Rawa like Heisenberg. Is there anything else you would like to t
 You: Sorry I meant like the episode of Breaking Bad where Walter White says Heisenberg
 Chat GPT: Ah, I see. In that case, you could try saying it like this: "My name is Rawa, like Heisenberg." This is a reference to the character Walter White from the TV show Breaking Bad, who often used the pseudonym "Heisenberg" when conducting illegal activities. The character was known for his cool and calculated demeanor, so saying your name like Heisenberg in this context would mean saying it with confidence and authority.
  ```
+
+### Shall we get started?
+1. Run 
+```
+pip install chatgptpy --upgrade
+```
+2. That's it!
+
+### Usage
+```python
+from pychatgpt import Chat
+
+# Initializing the chat class will automatically log you in, check access_tokens
+chat = Chat(email="email", password="password") 
+answer = chat.ask("Hello!")
+```
+
+#### Usage with a proxy
+
+```python
+from pychatgpt import Chat
+
+chat = Chat(email="email", password="password", proxy="http://localhost:8080")  # proxy is optional, type: str or dict
+answer = chat.ask("Hello!")
+```
+
+#### You could also manually set, get the token
+```python
+from pychatgpt import OpenAI
+
+# Manually set the token
+OpenAI.Auth.save_access_token(access_token="", expiry=0) 
+
+# Get the token, expiry
+access_token, expiry = OpenAI.Auth.get_access_token()
+
+# Check if the token is valid
+is_expired = OpenAI.Auth.token_expired() # Returns True or False
+```
+### Other notes
+If the token creation process is failing, on `main.py` on line 40
+1. Try to use a proxy (I recommend using this always)
+2. Don't try to log in too fast. At least wait 10 minutes if you're being rate limited.
+3. If you're still having issues, try to use a VPN. On a VPN, the script should work fine.
+
 [//]: # (Add A changelog here)
 
 ### Change Log
 
-- Added conversation tracking (thanks to @yeeyangtee)
-- Added a nice looking spinner when the script is waiting for a response from the API
+#### 1.0.0
+- Initial Release via PyPi
 
-### Shall we get started?
-1. Clone the repository
-2. Install the requirements using `pip install -r requirements.txt`
-3. Open `config.json` and enter your email and password.
-4. Run `main.py` and let the script do the rest.
-
-### Other notes
-If the token creation process is failing, on `main.py` on line 40
-1. Try to use a proxy (I recommend using this always)
-```python
-Auth.OpenAIAuth(email_address=email, password=password, use_proxy=True, proxy="http://127.0.0.0:8080")
-```
-2. Don't try to log in too fast. At least wait 10 minutes if you're being rate limited.
-3. If you're still having issues, try to use a VPN. On a VPN, the script should work fine.
 ### What's next?
 I'm planning to add a few more features, such as:
-- [ ] A python module that can be imported and used in other projects
+- [x] A python module that can be imported and used in other projects
 - [ ] A way to save the conversation
 - [ ] Better error handling
-
-### Screenshots
-1. Chatting with the bot
-![Screenshot 1](https://media.discordapp.net/attachments/1038565125482881027/1049255804366237736/image.png)
-
-2. The Script creating a token for you.
-![Screenshot 2](https://media.discordapp.net/attachments/1038565125482881027/1049072247442264094/image.png?width=2468&height=885)
 
 ### The whole process
 First, I'd like to tell you that "just making http" requests is not going to be enough, Auth0 is smart, each process is guarded by a 

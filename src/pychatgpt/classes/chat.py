@@ -4,17 +4,25 @@ import re
 import uuid
 from typing import Tuple
 
+
 # Requests
 import requests
 
+# Colorama
+import colorama
+from colorama import Fore
+colorama.init(autoreset=True)
+
 
 def ask(
-        auth_token: str,
+        auth_token: Tuple,
         prompt: str,
         conversation_id:
         str or None,
-        previous_convo_id: str or None
+        previous_convo_id: str or None,
+        proxies: str or dict or None
 ) -> Tuple[str, str or None, str or None]:
+    auth_token, expiry = auth_token
 
     headers = {
         'Content-Type': 'application/json',
@@ -42,7 +50,16 @@ def ask(
         "model": "text-davinci-002-render"
     }
     try:
-        response = requests.post(
+        session = requests.Session()
+        if proxies is not None:
+            if isinstance(proxies, str):
+                proxies = {'http': proxies, 'https': proxies}
+
+            # Set the proxies
+            print(Fore.YELLOW + f"Using proxies: {proxies['http']}")
+            session.proxies.update(proxies)
+
+        response = session.post(
             "https://chat.openai.com/backend-api/conversation",
             headers=headers,
             data=json.dumps(data)

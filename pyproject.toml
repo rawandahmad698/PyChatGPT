@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chatgptpy"
+version = "1.0.1"
+authors = [
+  { name="Rawand Ahmed Shaswar", email="pychatgpt@rawa.dev" },
+]
+description = "⚡️TLS-based ChatGPT API with auto token regeneration, conversation tracking, proxy support and more."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "tls-client",
+  "requests",
+  "colorama",
+  "svglib",
+  "bs4",
+  "colorama",
+  "reportlab"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/rawandahmad698/PyChatGPT"
+"Bug Tracker" = "https://github.com/rawandahmad698/PyChatGPT/issues"
