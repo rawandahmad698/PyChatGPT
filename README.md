@@ -14,6 +14,7 @@ No more. I have been able to reverse engineer the API and use a TLS client to mi
 Basically, the script logs in on your behalf, using a TLS client, then grabs the Access Token. It's pretty fast.
 
 ### Features
+- [x] Proxy Support
 - [x] Automatically login without involving a browser
 - [x] Automatically grab Access Token
 - [x] Get around the login captcha (If you try to log in subsequently, you will be prompted to solve a captcha)
@@ -37,7 +38,7 @@ Auth.OpenAIAuth(email_address=email, password=password, use_proxy=True, proxy="h
 3. If you're still having issues, try to use a VPN. On a VPN, the script should work fine.
 ### What's next?
 I'm planning to add a few more features, such as:
-- [ ] A GUI
+- [ ] A python module that can be imported and used in other projects
 - [ ] A way to save the conversation
 - [ ] Better error handling
 
