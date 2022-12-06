@@ -32,7 +32,7 @@ def chat_gpt(prompt: str, previous_convo: str = None) -> str:
     access_token = Auth.get_access_token()
     if access_token == "":
         print(f"{Fore.RED}>> Access token is missing in /Classes/auth.json.")
-        raise Exception(
+        raise ValueError(
             "error: access token is missing in /Classes/auth.json, your may run main.py or refresh manually."
         )
     answer, previous_convo = Chat.ask(auth_token=access_token,
@@ -41,7 +41,7 @@ def chat_gpt(prompt: str, previous_convo: str = None) -> str:
     if answer == "400" or answer == "401":
         result = ">> Token invalid, please contact the owner to refresh."
         print(f"{Fore.RED}>> Your token is invalid. Attempting to refresh..")
-        raise Exception(
+        raise ValueError(
             "error: access token is invalid in /Classes/auth.json, your may run main.py or refresh manually."
         )
     else:
