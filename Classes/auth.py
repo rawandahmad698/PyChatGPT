@@ -106,7 +106,7 @@ class OpenAIAuth:
                     "http": self.proxy,
                     "https": self.proxy
                 }
-                self.session.proxies(proxies)
+                self.session.proxies = proxies
 
         print(f"{Fore.GREEN}[OpenAI] {Fore.WHITE}Beginning auth process")
         # First, make a request to https://chat.openai.com/auth/login
