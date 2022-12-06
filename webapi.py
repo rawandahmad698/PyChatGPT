@@ -16,38 +16,41 @@ from typing import Union
 
 from fastapi import FastAPI
 
-AI_PREV_CONVO = None
+PREVIOUS_CONVO_ID = None
 app = FastAPI()
 
 
 @app.get("/")
 def read_root():
-    return {"Only accept:": "'host:port/{query}'"}
+    return {"error": "Missing query. e.g {host:port/{your_query}"}
 
 
 @app.get("/{prompt}")
-def chatGPT(prompt: str, previous_convo: str = None) -> str:
-    global AI_PREV_CONVO
+def chat_gpt(prompt: str, previous_convo: str = None) -> str:
+    global PREVIOUS_CONVO_ID
     print(f"{Fore.GREEN}>> Starting chat..." + Fore.RESET)
     access_token = Auth.get_access_token()
     if access_token == "":
         print(f"{Fore.RED}>> Access token is missing in /Classes/auth.json.")
-        pass
+        raise Exception(
+            "error: access token is missing in /Classes/auth.json, your may run main.py or refresh manually."
+        )
     answer, previous_convo = Chat.ask(auth_token=access_token,
                                       prompt=prompt,
-                                      previous_convo_id=AI_PREV_CONVO)
+                                      previous_convo_id=PREVIOUS_CONVO_ID)
     if answer == "400" or answer == "401":
         result = ">> Token invalid, please contact the owner to refresh."
         print(f"{Fore.RED}>> Your token is invalid. Attempting to refresh..")
-        pass
+        raise Exception(
+            "error: access token is invalid in /Classes/auth.json, your may run main.py or refresh manually."
+        )
     else:
         result = answer
         if previous_convo is not None:
-            AI_PREV_CONVO = previous_convo
-    print(result)
+            PREVIOUS_CONVO_ID = previous_convo
     return result
 
 
 if __name__ == "__main__":
     prompt = input("You: ")
-    print(chatGPT(prompt))
+    print(chat_gpt(prompt))
