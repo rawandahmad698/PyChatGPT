@@ -1,1 +1,3 @@
 *.json
+*.pyc
+captcha.png
