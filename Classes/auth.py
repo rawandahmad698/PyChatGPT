@@ -354,11 +354,16 @@ class OpenAIAuth:
             # Find __NEXT_DATA__, which contains the data we need, the get accessToken
             next_data = soup.find("script", {"id": "__NEXT_DATA__"})
             # Access Token
-            access_token = re.findall(r"accessToken\":\"(.*)\"", next_data.text)[0]
-            access_token = access_token.split('"')[0]
-            print(f"{Fore.GREEN}[OpenAI][8] {Fore.WHITE}Access Token: {Fore.GREEN}{access_token}")
-            # Save access_token and an hour from now on ./classes/auth.json
-            self.save_access_token(access_token=access_token)
+            access_token = re.findall(r"accessToken\":\"(.*)\"", next_data.text)
+            if access_token:
+                access_token = access_token[0]
+                access_token = access_token.split('"')[0]
+                print(f"{Fore.GREEN}[OpenAI][8] {Fore.WHITE}Access Token: {Fore.GREEN}{access_token}")
+                # Save access_token and an hour from now on ./classes/auth.json
+                self.save_access_token(access_token=access_token)
+            else:
+                print(f"{Fore.RED}[OpenAI][8] {Fore.WHITE}While most of the process was successful, "
+                      f"Auth0 didn't issue an access token, Use proxies or retry.")
 
     @staticmethod
     def save_access_token(access_token: str):
