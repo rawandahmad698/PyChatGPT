@@ -31,18 +31,18 @@ Chat GPT: Sure, Rawa like Heisenberg. Is there anything else you would like to t
 You: Sorry I meant like the episode of Breaking Bad where Walter White says Heisenberg
 Chat GPT: Ah, I see. In that case, you could try saying it like this: "My name is Rawa, like Heisenberg." This is a reference to the character Walter White from the TV show Breaking Bad, who often used the pseudonym "Heisenberg" when conducting illegal activities. The character was known for his cool and calculated demeanor, so saying your name like Heisenberg in this context would mean saying it with confidence and authority.
  ```
+[//]: # (Add A changelog here)
+
+### Change Log
+
+- Added conversation tracking (thanks to @yeeyangtee)
+- Added a nice looking spinner when the script is waiting for a response from the API
 
 ### Shall we get started?
 1. Clone the repository
 2. Install the requirements using `pip install -r requirements.txt`
 3. Open `config.json` and enter your email and password.
 4. Run `main.py` and let the script do the rest.
-
-[//]: # (Add A changelog here)
-
-### Change Log
-- Added conversation tracking (thanks to @yeeyangtee)
-- Added a nice looking spinner when the script is waiting for a response from the API
 
 ### Other notes
 If the token creation process is failing, on `main.py` on line 40
