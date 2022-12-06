@@ -1,16 +1,7 @@
 # 🔥 PyChatGPT
-<p align="center"><i>Chatting</i></p>
+*⭐️ Like this repo? please star*
 
-![Screenshot 1](https://media.discordapp.net/attachments/1038565125482881027/1049255804366237736/image.png)
-
-[//]: # (Italic centred text saying screenshots)
-<p align="center"><i>Creating a token</i></p>
-
-![Screenshot 2](https://media.discordapp.net/attachments/1038565125482881027/1049072247442264094/image.png?width=2468&height=885)
-
-*Like this repo? please star ⭐️*
-
-*💡 If OpenAI change their API, I will fix it as soon as possible, so Watch the repo if you want to be notified*
+*💡 If OpenAI change their API, I will fix it as soon as possible, so <mark>Watch</mark> the repo if you want to be notified*
 
 I have been looking for a way to interact with the new Chat GPT API, but most of the sources here on GitHub 
 require you to have a Chromium instance running in the background. or by using the Web Inspector to grab Access Token manually.
@@ -28,6 +19,15 @@ Basically, the script logs in on your behalf, using a TLS client, then grabs the
 - [x] Automatically refreshes the access token when it expires
 - [x] Uses colorama to colorize the output, because why not?
 - [x] Smart Conversation Tracking 
+
+<p align="center"><i>Chatting</i></p>
+
+![Screenshot 1](https://media.discordapp.net/attachments/1038565125482881027/1049255804366237736/image.png)
+
+[//]: # (Italic centred text saying screenshots)
+<p align="center"><i>Creating a token</i></p>
+
+![Screenshot 2](https://media.discordapp.net/attachments/1038565125482881027/1049072247442264094/image.png?width=2468&height=885)
 
 ```
 You: Hi there, My name is Rawa
