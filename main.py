@@ -53,6 +53,7 @@ if __name__ == "__main__":
 
     print(f"{Fore.GREEN}>> Starting chat..." + Fore.RESET)
     previous_convo_id = None
+    conversation_id = None
     access_token = Auth.get_access_token()
     while True:
         try:
@@ -61,8 +62,9 @@ if __name__ == "__main__":
                 exit(1)
 
             user_input = input("You: ")
-            answer, previous_convo = Chat.ask(auth_token=access_token,
+            answer, previous_convo, conversation = Chat.ask(auth_token=access_token,
                                               prompt=user_input,
+                                              conversation_id=conversation_id,
                                               previous_convo_id=previous_convo_id)
             if answer == "400" or answer == "401":
                 print(f"{Fore.RED}>> Your token is invalid. Attempting to refresh..")
@@ -73,6 +75,8 @@ if __name__ == "__main__":
             else:
                 if previous_convo is not None:
                     previous_convo_id = previous_convo
+                if conversation is not None:
+                    conversation_id = conversation
 
                 print(f"Chat GPT: {answer}")
         except KeyboardInterrupt:
