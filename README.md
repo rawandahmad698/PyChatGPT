@@ -1,8 +1,8 @@
-# PyChatGPT
 
-## Tuesday, December 6, 2022 (Code is tested, working and updated 💯)
+### Tuesday, December 6, 2022 (Code is tested, working and updated 💯)
 I got reports of OpenAI changing their API method, nothing is changed, they just added some extra headers (Check out ./Classes/chat.py)
 
+# PyChatGPT
 *If you want me to maintain this repo, please star ⭐️*
 
 
