@@ -7,9 +7,9 @@ import os
 import time
 
 # Local
-from classes import auth as Auth
-from classes import chat as Chat
-from classes import spinner as Spinner
+from Classes import auth as Auth
+from Classes import chat as Chat
+from Classes import spinner as Spinner
 
 # Fancy stuff
 import colorama
