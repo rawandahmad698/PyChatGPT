@@ -29,7 +29,7 @@ Basically, the script logs in on your behalf, using a TLS client, then grabs the
 4. Run `main.py` and let the script do the rest.  
 5. *[optional]* To enable HTTP-API support:
 - Install uvicorn by running `pip install "uvicorn[standard]"`;
-- Start by running: `nohup uvicorn api:app --host 0.0.0.0 --reload > log.txt 2>&1 &`. ;
+- Start by running: `nohup uvicorn webapi:app --host 0.0.0.0 --reload > log.txt 2>&1 &`. ;
 - Then, access by `GET` method at `http://host:port/{prompt}`. 
 
 ### Other notes
