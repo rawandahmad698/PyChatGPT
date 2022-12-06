@@ -100,8 +100,9 @@ If the token creation process is failing, on `main.py` on line 40
 ### What's next?
 I'm planning to add a few more features, such as:
 - [x] A python module that can be imported and used in other projects
-- [ ] A way to save the conversation
+- [x] A way to save the conversation
 - [ ] Better error handling
+- [ ] Multi-user chatting
 
 ### The whole process
 First, I'd like to tell you that "just making http" requests is not going to be enough, Auth0 is smart, each process is guarded by a 
