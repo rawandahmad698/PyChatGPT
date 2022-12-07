@@ -254,7 +254,7 @@ class Chat:
                 if self.save:
                     self.__chat_buf.append("You: "+prompt)
                     self.__chat_buf.append("Chat GPT: "+answer)
-            except KeyboardInterrupt:\
+            except KeyboardInterrupt:
                 print(f"{Fore.RED}>> Exiting...")
                 self.save_data()
                 break
