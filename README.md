@@ -83,7 +83,7 @@ answer = chat.ask("Hello!")
 ```python
 from pychatgpt import Chat
 
-chat = Chat(email="email", password="password", proxy="http://localhost:8080")  # proxy is optional, type: str or dict
+chat = Chat(email="email", password="password", proxies="http://localhost:8080")  # proxy is optional, type: str or dict
 answer = chat.ask("Hello!")
 ```
 
