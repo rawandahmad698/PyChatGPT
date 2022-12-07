@@ -24,16 +24,16 @@ class Chat:
         self.email = email
         self.password = password
         self.proxies = proxies
-	self.save = save
-	self.resume = resume
-	self.chat_log = chat_log
-	self.id_log = id_log
+        self.save = save
+        self.resume = resume
+        self.chat_log = chat_log
+        self.id_log = id_log
 
         self.__auth_access_token: str or None = None
         self.__auth_access_token_expiry: int or None = None
         self.__conversation_id: str or None = None
         self.__previous_convo_id: int or None = None
-	self.__chat_buf: list or None = None
+        self.__chat_buf: list or None = None
         self._setup()
 
     def _setup(self):
@@ -56,58 +56,57 @@ class Chat:
             print(f"{Fore.RED}>> Email and password cannot be empty.")
             raise Exceptions.PyChatGPTException("Email and password cannot be empty.")
 
-	if not isinstance(self.save, bool) or not isinstance(self.resume, bool):
-	    print(f"{Fore.RED}>> Options to save and resume must be boolean.")
+        if not isinstance(self.save, bool) or not isinstance(self.resume, bool):
+            print(f"{Fore.RED}>> Options to save and resume must be boolean.")
             raise Exceptions.PyChatGPTException("Options to save and resume must be boolean.")
 
-	if self.save:
-		if not self.chat_log or not self.id_log:
-			print(f"{Fore.RED}>> You must provide a file path for chat_log and id_log when saving a chat.")
-			raise Exceptions.PyChatGPTException("When saving a chat, file paths for chat_log and id_log must be provided.")
-		else if not isinstance(self.chat_log, str) or not isinstance(self.id_log, str):
-			print(f"{Fore.RED}>> File paths for chat_log and id_log must be strings when saving a chat.")
-			raise Exceptions.PyChatGPTException("When saving a chat, file paths for chat_log and id_log must be strings.")
-		else if len(self.chat_log) == 0 or len(self.id_log) == 0:
-			print(f"{Fore.RED}>> File paths for chat_log and id_log cannot be empty when saving a chat.")
-			raise Exceptions.PyChatGPTException("When saving a chat, file paths for chat_log and id_log cannot be empty.")
-		else if not os.path.exists(self.chat_log) or not os.path.exists(self.id_log):
-			print(f"{Fore.RED}>> File paths for chat_log and id_log must be valid when saving a chat.")
-			raise Exceptions.PyChatGPTException("When saving a chat, file paths for chat_log and id_log must already exist.")
-		self.__chat_buf = []
+        if self.save:
+            if self.chat_log is None or self.id_log is None:
+                print(f"{Fore.RED}>> You must provide a file path for chat_log and id_log when saving a chat.")
+                raise Exceptions.PyChatGPTException("When saving a chat, file paths for chat_log and id_log must be provided.")
+            elif not isinstance(self.chat_log, str) or not isinstance(self.id_log, str):
+                print(f"{Fore.RED}>> File paths for chat_log and id_log must be strings when saving a chat.")
+                raise Exceptions.PyChatGPTException("When saving a chat, file paths for chat_log and id_log must be strings.")
+            elif len(self.chat_log) == 0 or len(self.id_log) == 0:
+                print(f"{Fore.RED}>> File paths for chat_log and id_log cannot be empty when saving a chat.")
+                raise Exceptions.PyChatGPTException("When saving a chat, file paths for chat_log and id_log cannot be empty.")
+            elif not os.path.exists(self.chat_log) or not os.path.exists(self.id_log):
+                print(f"{Fore.RED}>> File paths for chat_log and id_log must be valid when saving a chat.")
+                raise Exceptions.PyChatGPTException("When saving a chat, file paths for chat_log and id_log must already exist.")
+            self.__chat_buf = []
 
-	if self.resume and not self.save:
-		if self.id_log is None:
-			print(f"{Fore.RED}>> You must provide a file path for id_log when resuming a chat.")
-			raise Exceptions.PyChatGPTException("When resuming a chat, file path for id_log must be provided.")
-		else if not isinstance(self.id_log, str):
-			print(f"{Fore.RED}>> File path for id_log must be a string when resuming a chat.")
-			raise Exceptions.PyChatGPTException("When resuming a chat, file path for id_log must be a string.")
-		else if len(self.id_log) == 0:
-			print(f"{Fore.RED}>> File path for id_log cannot be empty when resuming a chat.")
-			raise Exceptions.PyChatGPTException("When resuming a chat, file path for id_log cannot be empty.")
-		else if not os.path.exists(self.id_log):
-			print(f"{Fore.RED}>> File path for id_log must be valid when saving a chat.")	
-			raise Exceptions.PyChatGPTException("When resuming a chat, file path for id_log must already exist.")
+        if self.resume and not self.save:
+            if self.id_log is None:
+                print(f"{Fore.RED}>> You must provide a file path for id_log when resuming a chat.")
+                raise Exceptions.PyChatGPTException("When resuming a chat, file path for id_log must be provided.")
+            elif not isinstance(self.id_log, str):
+                print(f"{Fore.RED}>> File path for id_log must be a string when resuming a chat.")
+                raise Exceptions.PyChatGPTException("When resuming a chat, file path for id_log must be a string.")
+            elif len(self.id_log) == 0:
+                print(f"{Fore.RED}>> File path for id_log cannot be empty when resuming a chat.")
+                raise Exceptions.PyChatGPTException("When resuming a chat, file path for id_log cannot be empty.")
+            elif not os.path.exists(self.id_log):
+                print(f"{Fore.RED}>> File path for id_log must be valid when saving a chat.")
+                raise Exceptions.PyChatGPTException("When resuming a chat, file path for id_log must already exist.")
 
-	if self.resume:
-		if os.path.getsize(self.id_log) == 0:
-			print(f"{Fore.RED}>> File size for id_log cannot be zero when resuming a chat.")	
-			raise Exceptions.PyChatGPTException("When resuming a chat, file size for id_log cannot be zero.")
-		else:
-			try:
-				with open(self.id_log, "r") as f:
-					self.__previous_convo_id = int(f.readline().strip())
-					self.__conversation_id = int(f.readline().strip())
-			except ValueError as verr:
-				print(f"{Fore.RED}>> When resuming a chat, conversation id and previous conversation id in id_log must be integers.")	
-				raise Exceptions.PyChatGPTException("When resuming a chat, conversation id and previous conversation id in id_log must be integers.")
-			except IOError as err:
-				print(f"{Fore.RED}>> When resuming a chat, conversation id and previous conversation id in id_log must be separated by newlines.")
-				raise Exceptions.PyChatGPTException("When resuming a chat, conversation id and previous conversation id in id_log must be separated by newlines.")
-			except Exception as ex:
-				print(f"{Fore.RED}>> When resuming a chat, there was an issue reading id_log, make sure that it is formatted correctly.")
-				raise Exceptions.PyChatGPTException("When resuming a chat, there was an issue reading id_log, make sure that it is formatted correctly.")
-				
+        if self.resume:
+            if os.path.getsize(self.id_log) == 0:
+                print(f"{Fore.RED}>> File size for id_log cannot be zero when resuming a chat.")
+                raise Exceptions.PyChatGPTException("When resuming a chat, file size for id_log cannot be zero.")
+            else:
+                try:
+                    with open(self.id_log, "r") as f:
+                        self.__previous_convo_id = int(f.readline().strip())
+                        self.__conversation_id = int(f.readline().strip())
+                except ValueError as verr:
+                    print(f"{Fore.RED}>> When resuming a chat, conversation id and previous conversation id in id_log must be integers.")
+                    raise Exceptions.PyChatGPTException("When resuming a chat, conversation id and previous conversation id in id_log must be integers.")
+                except IOError as err:
+                    print(f"{Fore.RED}>> When resuming a chat, conversation id and previous conversation id in id_log must be separated by newlines.")
+                    raise Exceptions.PyChatGPTException("When resuming a chat, conversation id and previous conversation id in id_log must be separated by newlines.")
+                except Exception as ex:
+                    print(f"{Fore.RED}>> When resuming a chat, there was an issue reading id_log, make sure that it is formatted correctly.")
+                    raise Exceptions.PyChatGPTException("When resuming a chat, there was an issue reading id_log, make sure that it is formatted correctly.")
 
         # Check for access_token & access_token_expiry in env
         if OpenAI.token_expired():
@@ -153,8 +152,8 @@ class Chat:
         if len(prompt) == 0:
             raise Exceptions.PyChatGPTException("Prompt cannot be empty.")
 
-	if rep_queue is not None and not isinstance(rep_queue, Queue):
-	    raise Exceptions.PyChatGPTException("Cannot enter a non-queue object as the response queue for threads.")
+        if rep_queue is not None and not isinstance(rep_queue, Queue):
+            raise Exceptions.PyChatGPTException("Cannot enter a non-queue object as the response queue for threads.")
 
         # Check if the access token is expired
         if OpenAI.token_expired():
@@ -175,8 +174,9 @@ class Chat:
                                                            conversation_id=self.__conversation_id,
                                                            previous_convo_id=self.__previous_convo_id,
                                                            proxies=self.proxies)
-	if rep_queue is not None:
-		rep_queue.put((prompt, answer))
+
+        if rep_queue is not None:
+            rep_queue.put((prompt, answer))
 
         if answer == "400" or answer == "401":
             print(f"{Fore.RED}>> Failed to get a response from the API.")
@@ -184,29 +184,34 @@ class Chat:
 
         self.__conversation_id = convo_id
         self.__previous_convo_id = previous_convo
-	if self.save:
-		self.__chat_buf.append("You: "+prompt)
-		self.__chat_buf.append("Chat GPT: "+answer)
+
+        if self.save:
+            self.__chat_buf.append("You: "+prompt)
+            self.__chat_buf.append("Chat GPT: "+answer)
         return answer
 
     def save_data(self):
-	if self.save:
-		try:
-			with open(self.chat_log, "a") as f:
-				f.write("\n".join(self.__chat_buf))
-			self.__chat_buf = []
-			with open(self.id_log, "w") as f:
-				f.write(str(self.__previous_convo_id)+"\n")
-				f.write(str(self.__conversation_id)+"\n")
-		except Exception as ex:
-			print(f"{Fore.RED}>> Failed to save chat and ids to chat log and id_log.")
+        if self.save:
+            try:
+                with open(self.chat_log, "a") as f:
+                    f.write("\n".join(self.__chat_buf))
+                self.__chat_buf = []
+                with open(self.id_log, "w") as f:
+                    f.write(str(self.__previous_convo_id)+"\n")
+                    f.write(str(self.__conversation_id)+"\n")
+            except Exception as ex:
+                print(f"{Fore.RED}>> Failed to save chat and ids to chat log and id_log.")
 
-    def cli_chat(self):
+    def cli_chat(self, rep_queue: Queue or None = None):
         """
         Start a CLI chat session.
         :param prompt:
         :return:
         """
+        if rep_queue is not None and not isinstance(rep_queue, Queue):
+            print(f"{Fore.RED}>> Entered a non-queue object to hold responses for another thread.")
+            raise Exceptions.PyChatGPTException("Cannot enter a non-queue object as the response queue for threads.")
+
         # Check if the access token is expired
         if OpenAI.token_expired():
             print(f"{Fore.RED}>> Your access token is expired. {Fore.GREEN}Attempting to recreate it...")
@@ -233,6 +238,10 @@ class Chat:
                                                                    conversation_id=self.__conversation_id,
                                                                    previous_convo_id=self.__previous_convo_id,
                                                                    proxies=self.proxies)
+
+                if rep_queue is not None:
+                    rep_queue.put((prompt, answer))
+
                 if answer == "400" or answer == "401":
                     print(f"{Fore.RED}>> Failed to get a response from the API.")
                     return None
@@ -241,10 +250,11 @@ class Chat:
                 self.__previous_convo_id = previous_convo
                 spinner.stop()
                 print(f"Chat GPT: {answer}")
-		if self.save:
-			self.__chat_buf.append("You: "+prompt)
-			self.__chat_buf.append("Chat GPT: "+answer)
-            except KeyboardInterrupt:
+
+                if self.save:
+                    self.__chat_buf.append("You: "+prompt)
+                    self.__chat_buf.append("Chat GPT: "+answer)
+            except KeyboardInterrupt:\
                 print(f"{Fore.RED}>> Exiting...")
-		self.save_data()
+                self.save_data()
                 break
