@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 # Builtins
-import os
 import time
 
 # Local

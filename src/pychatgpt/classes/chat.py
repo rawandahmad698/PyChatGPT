@@ -4,13 +4,13 @@ import re
 import uuid
 from typing import Tuple
 
-
 # Requests
 import requests
 
 # Colorama
 import colorama
 from colorama import Fore
+
 colorama.init(autoreset=True)
 
 
@@ -37,12 +37,12 @@ def ask(
         previous_convo_id = str(uuid.uuid4())
 
     data = {
-        "action": "next",
+        "action": "variant",
         "messages": [
             {
                 "id": str(uuid.uuid4()),
                 "role": "user",
-                "content": {"content_type": "text", "parts": [prompt]}
+                "content": {"content_type": "text", "parts": [str(prompt)]},
             }
         ],
         "conversation_id": conversation_id,
@@ -72,7 +72,11 @@ def ask(
         elif response.status_code == 401:
             print("Error: " + response.text)
             return "401", None, None
+        elif response.status_code == 504:
+            print("Error, looks like the server is either overloaded or down. Try again later.")
+            return "504", None, None
         else:
+            print("Status Code: " + str(response.status_code))
             print("Error: " + response.text)
             return "Error", None, None
     except Exception as e:
