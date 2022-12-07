@@ -4,6 +4,17 @@
 [![PyPi](https://img.shields.io/pypi/v/chatgptpy.svg)](https://pypi.python.org/pypi/chatgptpy)
 [![PyPi](https://img.shields.io/pypi/dm/chatgptpy.svg)](https://pypi.python.org/pypi/chatgptpy)
 
+[//]: # (Add A changelog here)
+
+### Change Log
+#### 1.0.2 
+#### Update using `pip install chatgptpy --upgrade`
+- ChatGPT API switches from `action=next` to `action=variant`, frequently. This library is now using `action=variant` instead of `action=next` to get the next response from the API.
+- Sometimes when the server is overloaded, the API returns a `502 Bad Gateway` error.
+- Added Error handling if the auth.json file is not found/corrupt
+#### 1.0.0
+- Initial Release via PyPi
+
 *⭐️ Like this repo? please star*
 
 *💡 If OpenAI change their API, I will fix it as soon as possible, so <mark>Watch</mark> the repo if you want to be notified*
@@ -95,12 +106,6 @@ If the token creation process is failing:
 2. Don't try to log in too fast. At least wait 10 minutes if you're being rate limited.
 3. If you're still having issues, try to use a VPN. On a VPN, the script should work fine.
 
-[//]: # (Add A changelog here)
-
-### Change Log
-
-#### 1.0.0
-- Initial Release via PyPi
 
 ### What's next?
 I'm planning to add a few more features, such as:
