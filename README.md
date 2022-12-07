@@ -1,5 +1,6 @@
 As per official OpenAI discord, The servers are currently overloaded
-Watch this repo to be notifed of updates. 
+
+📢 Watch this repo to be notifed of updates. 
 
 # 🔥 PyChatGPT
 
