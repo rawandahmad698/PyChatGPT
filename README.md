@@ -1,3 +1,6 @@
+As per official OpenAI discord, The servers are currently overloaded
+Watch this repo to be notifed of updates. 
+
 # 🔥 PyChatGPT
 
 [![Python](https://img.shields.io/badge/python-3.8-blue.svg)](https://img.shields.io/badge/python-3.8-blue.svg)
