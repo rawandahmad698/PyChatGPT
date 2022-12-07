@@ -46,6 +46,8 @@ def token_expired() -> bool:
                 return True
             else:
                 return False
+    except KeyError:
+        return True
     except FileNotFoundError:
         return True
 

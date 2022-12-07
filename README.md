@@ -1,4 +1,9 @@
 # 🔥 PyChatGPT
+
+[![Python](https://img.shields.io/badge/python-3.8-blue.svg)](https://img.shields.io/badge/python-3.8-blue.svg)
+[![PyPi](https://img.shields.io/pypi/v/chatgptpy.svg)](https://pypi.python.org/pypi/chatgptpy)
+[![PyPi](https://img.shields.io/pypi/dm/chatgptpy.svg)](https://pypi.python.org/pypi/chatgptpy)
+
 *⭐️ Like this repo? please star*
 
 *💡 If OpenAI change their API, I will fix it as soon as possible, so <mark>Watch</mark> the repo if you want to be notified*
