@@ -95,10 +95,10 @@ from pychatgpt import OpenAI
 OpenAI.Auth.save_access_token(access_token="", expiry=0) 
 
 # Get the token, expiry
-access_token, expiry = OpenAI.Auth.get_access_token()
+access_token, expiry = OpenAI.get_access_token()
 
 # Check if the token is valid
-is_expired = OpenAI.Auth.token_expired() # Returns True or False
+is_expired = OpenAI.token_expired() # Returns True or False
 ```
 ### Other notes
 If the token creation process is failing:
