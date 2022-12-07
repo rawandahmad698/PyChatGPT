@@ -4,6 +4,7 @@
 # Builtins
 import time
 import os
+from queue import Queue
 
 # Local
 from .classes import openai as OpenAI
@@ -141,7 +142,7 @@ class Chat:
         # If created, then return True
         return True
 
-    def ask(self, prompt: str) -> str or None:
+    def ask(self, prompt: str, rep_queue: Queue or None = None) -> str or None:
         if prompt is None:
             print(f"{Fore.RED}>> Enter a prompt.")
             raise Exceptions.PyChatGPTException("Enter a prompt.")
@@ -151,6 +152,9 @@ class Chat:
 
         if len(prompt) == 0:
             raise Exceptions.PyChatGPTException("Prompt cannot be empty.")
+
+	if rep_queue is not None and not isinstance(rep_queue, Queue):
+	    raise Exceptions.PyChatGPTException("Cannot enter a non-queue object as the response queue for threads.")
 
         # Check if the access token is expired
         if OpenAI.token_expired():
@@ -171,6 +175,9 @@ class Chat:
                                                            conversation_id=self.__conversation_id,
                                                            previous_convo_id=self.__previous_convo_id,
                                                            proxies=self.proxies)
+	if rep_queue is not None:
+		rep_queue.put((prompt, answer))
+
         if answer == "400" or answer == "401":
             print(f"{Fore.RED}>> Failed to get a response from the API.")
             return None
