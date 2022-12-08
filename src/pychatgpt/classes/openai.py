@@ -76,8 +76,9 @@ class Auth:
         self.password = password
         self.proxy = proxy
         self.__session = tls_client.Session(
-            client_identifier="chrome_105"
+            client_identifier="chrome_105",
         )
+
 
     @staticmethod
     def _url_encode(string: str) -> str:
@@ -111,6 +112,7 @@ class Auth:
                     proxies = self.proxy
                 print(f"{Fore.GREEN}[OpenAI] {Fore.WHITE}Using proxy: {self.proxy}")
                 self.__session.proxies = proxies
+
 
         print(f"{Fore.GREEN}[OpenAI] {Fore.WHITE}Beginning auth process")
         # First, make a request to https://chat.openai.com/auth/login
