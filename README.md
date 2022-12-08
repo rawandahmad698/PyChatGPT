@@ -42,7 +42,7 @@ Chat GPT: Ah, I see. In that case, you could try saying it like this: "My name i
 
 ## Install
 ```
-pip install chatgptpy --upgrade
+pip install pychatgptpy --upgrade
 ```
 
 ## Usage
