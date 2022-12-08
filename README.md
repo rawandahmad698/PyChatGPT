@@ -115,6 +115,9 @@ is_expired = OpenAI.Auth.token_expired() # Returns True or False
 
 #### Update using `pip install chatgptpy --upgrade`
 
+#### 1.0.4
+- Fixes for part 8 of token authentication
+
 #### 1.0.3 
 - a new `options()` class method to set the options for the chat session
 - save the conversation to a file
