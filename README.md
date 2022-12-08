@@ -44,7 +44,6 @@ pip install chatgptpy --upgrade
 ```
 
 ## Usage
-#### Start a CLI session
 [**NEW**] Pass a `options()` object to the `ChatGPT()` constructor to customize the session
 
 [**NEW**] You can now save your conversations to a file
