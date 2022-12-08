@@ -1,4 +1,5 @@
 *.json
+*.txt
 dist
 venv
 __pycache__

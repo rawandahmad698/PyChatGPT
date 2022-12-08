@@ -19,57 +19,26 @@ from colorama import Fore
 colorama.init(autoreset=True)
 
 class Options:
-    def __init__(self,
-                 proxies: str or dict or None = None,
-                 verify: bool = True,
-                 track: bool or None = False,
-                 chat_log: str or None = None,
-                 id_log: str or None = None):
-
-        self.proxies = proxies
-        self.track = track
-        self.verify = verify
-        self.chat_log = chat_log
-        self.id_log = id_log
-        self._setup()
-
-    def _setup(self):
-        # If track is enabled, create the chat log and id log files if they don't exist
-        if not isinstance(self.track, bool):
-            raise Exceptions.PyChatGPTException("Options to track conversation must be a boolean.")
-
-        if self.track:
-            if self.chat_log is not None:
-                self._create_if_not_exists(self.chat_log)
-            else:
-                # Create a chat log file called chat_log.txt
-                self.chat_log = "chat_log.txt"
-                self._create_if_not_exists(self.chat_log)
-
-            if self.id_log is not None:
-                if not os.path.exists(self.id_log):
-                    with open(self.id_log, 'w') as f:
-                        f.write("")
-            else:
-                # Create a chat log file called id_log.txt
-                self.id_log = "id_log.txt"
-                self._create_if_not_exists(self.id_log)
-
-    @staticmethod
-    def _create_if_not_exists(file: str):
-        if not os.path.exists(file):
-            with open(file, 'w') as f:
-                f.write("")
-
+    def __init__(self):
+        self.proxies: str or dict or None = None
+        self.track: bool or None = False
+        self.verify: bool = True
+        self.chat_log: str or None = None
+        self.id_log: str or None = None
 
 class Chat:
-    def __init__(self, email, password, options: Options or None = None):
+    def __init__(self,
+                 email: str,
+                 password: str,
+                 options: Options or None = None,
+                 conversation_id: str or None = None,
+                 previous_convo_id: str or None = None):
         self.email = email
         self.password = password
         self.options = options
 
-        self.conversation_id: str or None = None
-        self.previous_convo_id: int or None = None
+        self.conversation_id = conversation_id
+        self.previous_convo_id = previous_convo_id
 
         self.__auth_access_token: str or None = None
         self.__auth_access_token_expiry: int or None = None
@@ -77,16 +46,45 @@ class Chat:
 
         self._setup()
 
+    @staticmethod
+    def _create_if_not_exists(file: str):
+        if not os.path.exists(file):
+            with open(file, 'w') as f:
+                f.write("")
+
     def _setup(self):
         if self.options is not None:
+            # If track is enabled, create the chat log and id log files if they don't exist
+            if not isinstance(self.options.track, bool):
+                raise Exceptions.PyChatGPTException("Options to track conversation must be a boolean.")
+
+            if self.options.track:
+                if self.options.chat_log is not None:
+                    self._create_if_not_exists(self.options.chat_log)
+                    self.options.id_log = os.path.abspath(self.options.chat_log)
+                else:
+                    # Create a chat log file called chat_log.txt
+                    self.options.chat_log = "chat_log.txt"
+                    self._create_if_not_exists(self.options.chat_log)
+
+                if self.options.id_log is not None:
+                    self._create_if_not_exists(self.options.id_log)
+                    self.options.id_log = os.path.abspath(self.options.id_log)
+                else:
+                    # Create a chat log file called id_log.txt
+                    self.options.id_log = "id_log.txt"
+                    self._create_if_not_exists(self.options.id_log)
+
             if self.options.proxies is not None:
                 if not isinstance(self.options.proxies, dict):
                     if not isinstance(self.options.proxies, str):
                         raise Exceptions.PyChatGPTException("Proxies must be a string or dictionary.")
                     else:
                         self.proxies = {"http": self.options.proxies, "https": self.options.proxies}
+                        print(f"{Fore.GREEN}>> Using proxies: True.")
 
             if self.options.track:
+                print(f"{Fore.GREEN}>> Tracking conversation enabled.")
                 if not isinstance(self.options.chat_log, str) or not isinstance(self.options.id_log, str):
                     raise Exceptions.PyChatGPTException(
                         "When saving a chat, file paths for chat_log and id_log must be strings.")
@@ -95,6 +93,9 @@ class Chat:
                         "When saving a chat, file paths for chat_log and id_log cannot be empty.")
 
                 self.__chat_history = []
+        else:
+            self.options = Options()
+
 
         if not self.email or not self.password:
             print(f"{Fore.RED}>> You must provide an email and password when initializing the class.")
@@ -115,6 +116,8 @@ class Chat:
                     if len(f.read()) > 0:
                         self.previous_convo_id = f.readline().strip()
                         self.conversation_id = f.readline().strip()
+                    else:
+                        self.conversation_id = None
 
             except IOError:
                 raise Exceptions.PyChatGPTException("When resuming a chat, conversation id and previous conversation id in id_log must be separated by newlines.")
@@ -186,7 +189,7 @@ class Chat:
                                                            prompt=prompt,
                                                            conversation_id=self.conversation_id,
                                                            previous_convo_id=self.previous_convo_id,
-                                                           proxies=self.proxies)
+                                                           proxies=self.options.proxies)
 
         if rep_queue is not None:
             rep_queue.put((prompt, answer))
@@ -210,14 +213,17 @@ class Chat:
         if self.options.track:
             try:
                 with open(self.options.chat_log, "a") as f:
-                    f.write("\n".join(self.__chat_history))
-                self.__chat_history = []
+                    f.write("\n".join(self.__chat_history) + "\n")
+
                 with open(self.options.id_log, "w") as f:
                     f.write(str(self.previous_convo_id) + "\n")
                     f.write(str(self.conversation_id) + "\n")
+
             except Exception as ex:
                 print(f"{Fore.RED}>> Failed to save chat and ids to chat log and id_log."
                       f"{ex}")
+            finally:
+                self.__chat_history = []
 
     def cli_chat(self, rep_queue: Queue or None = None):
         """
@@ -241,6 +247,8 @@ class Chat:
         else:
             print(f"{Fore.GREEN}>> Access token is valid.")
             print(f"{Fore.GREEN}>> Starting CLI chat session...")
+            print(f"{Fore.GREEN}>> Type 'exit' to exit the chat session.")
+
 
         # Get access token
         access_token = OpenAI.get_access_token()
@@ -248,13 +256,17 @@ class Chat:
         while True:
             try:
                 prompt = input("You: ")
+                if prompt.replace("You: ", "") == "exit":
+                    self.save_data()
+                    break
+
                 spinner = Spinner.Spinner()
                 spinner.start(Fore.YELLOW + "Chat GPT is typing...")
                 answer, previous_convo, convo_id = ChatHandler.ask(auth_token=access_token,
                                                                    prompt=prompt,
                                                                    conversation_id=self.conversation_id,
                                                                    previous_convo_id=self.previous_convo_id,
-                                                                   proxies=self.proxies)
+                                                                   proxies=self.options.proxies)
 
                 if rep_queue is not None:
                     rep_queue.put((prompt, answer))
@@ -268,7 +280,7 @@ class Chat:
                 spinner.stop()
                 print(f"Chat GPT: {answer}")
 
-                if self.options.save:
+                if self.options.track:
                     self.__chat_history.append("You: " + prompt)
                     self.__chat_history.append("Chat GPT: " + answer)
 
