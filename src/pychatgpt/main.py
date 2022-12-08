@@ -60,7 +60,7 @@ class Chat:
 
             if self.options.track:
                 if self.options.chat_log is not None:
-                    self._create_if_not_exists(self.options.chat_log)
+                    self._create_if_not_exists(os.path.abspath(self.options.chat_log))
                     self.options.id_log = os.path.abspath(self.options.chat_log)
                 else:
                     # Create a chat log file called chat_log.txt
@@ -68,7 +68,7 @@ class Chat:
                     self._create_if_not_exists(self.options.chat_log)
 
                 if self.options.id_log is not None:
-                    self._create_if_not_exists(self.options.id_log)
+                    self._create_if_not_exists(os.path.abspath(self.options.id_log))
                     self.options.id_log = os.path.abspath(self.options.id_log)
                 else:
                     # Create a chat log file called id_log.txt
@@ -118,7 +118,6 @@ class Chat:
                         self.conversation_id = f.readline().strip()
                     else:
                         self.conversation_id = None
-
             except IOError:
                 raise Exceptions.PyChatGPTException("When resuming a chat, conversation id and previous conversation id in id_log must be separated by newlines.")
             except Exception:
