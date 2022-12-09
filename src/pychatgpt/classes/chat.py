@@ -9,8 +9,6 @@ import requests
 
 # Colorama
 import colorama
-from colorama import Fore
-
 colorama.init(autoreset=True)
 
 
@@ -33,8 +31,16 @@ def ask(
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15',
         'X-OpenAI-Assistant-App-Id': ''
     }
+
     if previous_convo_id is None:
         previous_convo_id = str(uuid.uuid4())
+
+    if conversation_id is not None and len(conversation_id) == 0:
+        # Empty string
+        conversation_id = None
+
+    # print("Conversation ID:", conversation_id)
+    # print("Previous Conversation ID:", previous_convo_id)
 
     data = {
         "action": "variant",
@@ -56,7 +62,6 @@ def ask(
                 proxies = {'http': proxies, 'https': proxies}
 
             # Set the proxies
-            print(Fore.YELLOW + f"Using proxies: {proxies['http']}")
             session.proxies.update(proxies)
 
         response = session.post(
@@ -70,15 +75,12 @@ def ask(
             as_json = json.loads(data)
             return as_json["message"]["content"]["parts"][0], as_json["message"]["id"], as_json["conversation_id"]
         elif response.status_code == 401:
-            print("Error: " + response.text)
-            return "401", None, None
-        elif response.status_code == 504:
-            print("Error, looks like the server is either overloaded or down. Try again later.")
-            return "504", None, None
+            return f"[Status Code] 401 | [Response Text] {response.text}", None, None
+        elif response.status_code >= 500:
+            print(">> Looks like the server is either overloaded or down. Try again later.")
+            return f"[Status Code] {response.status_code} | [Response Text] {response.text}", None, None
         else:
-            print("Status Code: " + str(response.status_code))
-            print("Error: " + response.text)
-            return "Error", None, None
+            return f"[Status Code] {response.status_code} | [Response Text] {response.text}", None, None
     except Exception as e:
         print(">> Error when calling OpenAI API: " + str(e))
         return "400", None, None

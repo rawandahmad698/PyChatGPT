@@ -182,6 +182,10 @@ class Auth:
         if response.status_code == 200 and 'json' in response.headers['Content-Type']:
             print(f"{Fore.GREEN}[OpenAI][3] {Fore.WHITE}Request was " + Fore.GREEN + "successful")
             url = response.json()["url"]
+            if url == "https://chat.openai.com/api/auth/error?error=OAuthSignin" or 'error' in url:
+                print(f"{Fore.GREEN}[OpenAI][3] {Fore.WHITE}Error: " + Fore.RED + "You have been rate limited")
+                raise Exceptions.PyChatGPTException("You have been rate limited.")
+
             print(f"{Fore.GREEN}[OpenAI][3] {Fore.WHITE}Callback URL: {url}")
             self._part_four(url=url)
         elif response.status_code == 400:
@@ -356,8 +360,39 @@ class Auth:
                 # Save access_token
                 self.save_access_token(access_token=access_token)
             else:
-                raise Exceptions.Auth0Exception("[OpenAI][8] While most of the process was successful, "
-                                                "Auth0 didn't issue an access token, Use proxies or retry.")
+                print(f"{Fore.GREEN}[OpenAI][8][CRITICAL] {Fore.WHITE}Access Token: {Fore.RED}Not found"
+                      f" Auth0 did not issue an access token.")
+                self.part_nine()
+
+    def part_nine(self):
+        print(f"{Fore.GREEN}[OpenAI][9] {Fore.WHITE}"
+              f"Attempting to get access token from: https://chat.openai.com/api/auth/session")
+        url = "https://chat.openai.com/api/auth/session"
+        headers = {
+            "Host": "ask.openai.com",
+            "Connection": "keep-alive",
+            "If-None-Match": "\"bwc9mymkdm2\"",
+            "Accept": "*/*",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15",
+            "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8",
+            "Referer": "https://chat.openai.com/chat",
+            "Accept-Encoding": "gzip, deflate, br",
+        }
+        response = self.__session.get(url, headers=headers)
+        is_200 = response.status_code == 200
+        if is_200:
+            print(f"{Fore.GREEN}[OpenAI][9] {Fore.GREEN}Request was successful")
+            if 'json' in response.headers['Content-Type']:
+                json_response = response.json()
+                access_token = json_response['accessToken']
+                print(f"{Fore.GREEN}[OpenAI][9] {Fore.WHITE}Access Token: {Fore.GREEN}{access_token}")
+                self.save_access_token(access_token=access_token)
+            else:
+                print(f"{Fore.GREEN}[OpenAI][9] {Fore.WHITE}Access Token: {Fore.RED}Not found, "
+                      f"Please try again with a proxy (or use a new proxy if you are using one)")
+        else:
+            print(f"{Fore.GREEN}[OpenAI][9] {Fore.WHITE}Access Token: {Fore.RED}Not found, "
+                  f"Please try again with a proxy (or use a new proxy if you are using one)")
 
     @staticmethod
     def save_access_token(access_token: str, expiry: int or None = None):

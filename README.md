@@ -4,48 +4,30 @@
 [![PyPi](https://img.shields.io/pypi/v/chatgptpy.svg)](https://pypi.python.org/pypi/chatgptpy)
 [![PyPi](https://img.shields.io/pypi/dm/chatgptpy.svg)](https://pypi.python.org/pypi/chatgptpy)
 
-[//]: # (Add A changelog here)
+*⭐️ Like this repo? please star & consider donating to keep it maintained*
 
-### Change Log
-#### 1.0.2 
-#### Update using `pip install chatgptpy --upgrade`
-- ChatGPT API switches from `action=next` to `action=variant`, frequently. This library is now using `action=variant` instead of `action=next` to get the next response from the API.
-- Sometimes when the server is overloaded, the API returns a `502 Bad Gateway` error.
-- Added Error handling if the auth.json file is not found/corrupt
-#### 1.0.0
-- Initial Release via PyPi
-
-*⭐️ Like this repo? please star*
+<a href="https://www.buymeacoffee.com/rawandahmed" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 *💡 If OpenAI change their API, I will fix it as soon as possible, so <mark>Watch</mark> the repo if you want to be notified*
 
-# Web Demo
-
-Integrated into [Huggingface Spaces 🤗](https://huggingface.co/spaces) using [Gradio](https://github.com/gradio-app/gradio). Try out the Web Demo [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/yizhangliu/chatGPT)
-
-I have been looking for a way to interact with the new Chat GPT API, but most of the sources here on GitHub 
-require you to have a Chromium instance running in the background. or by using the Web Inspector to grab Access Token manually.
-
-No more. I have been able to reverse engineer the API and use a TLS client to mimic a real user, allowing the script to login without setting off any bot detection techniques by Auth0
-
-Basically, the script logs in on your behalf, using a TLS client, then grabs the Access Token. It's pretty fast.
-
 ### Features
+- [x] Save Conversations to a file
+- [x] Resume conversations even after closing the program
 - [x] Proxy Support
 - [x] Automatically login without involving a browser
 - [x] Automatically grab Access Token
-- [x] Get around the login captcha (If you try to log in subsequently, you will be prompted to solve a captcha)
+- [x] Get around the login **captcha** (If you try to log in subsequently, you will be prompted to solve a captcha)
 - [x] Saves the access token to a file, so you don't have to log in again
 - [x] Automatically refreshes the access token when it expires
 - [x] Uses colorama to colorize the output, because why not?
 - [x] Smart Conversation Tracking 
 
-<p align="center"><i>Chatting</i></p>
+<p align="center">Chatting</p>
 
 ![Screenshot 1](https://media.discordapp.net/attachments/1038565125482881027/1049255804366237736/image.png)
 
 [//]: # (Italic centred text saying screenshots)
-<p align="center"><i>Creating a token</i></p>
+<p align="center">Creating a token</p>
 
 ![Screenshot 2](https://media.discordapp.net/attachments/1038565125482881027/1049072247442264094/image.png?width=2468&height=885)
 
@@ -58,22 +40,56 @@ You: Sorry I meant like the episode of Breaking Bad where Walter White says Heis
 Chat GPT: Ah, I see. In that case, you could try saying it like this: "My name is Rawa, like Heisenberg." This is a reference to the character Walter White from the TV show Breaking Bad, who often used the pseudonym "Heisenberg" when conducting illegal activities. The character was known for his cool and calculated demeanor, so saying your name like Heisenberg in this context would mean saying it with confidence and authority.
  ```
 
-### Shall we get started?
-1. Run 
+## Install
 ```
 pip install chatgptpy --upgrade
 ```
-That's it!
 
+## Usage
+[**NEW**] Pass a `options()` object to the `ChatGPT()` constructor to customize the session
 
-#### Start a CLI session?
+[**NEW**] You can now save your conversations to a file
+
+```python
+from pychatgpt import Chat, Options
+
+options = Options()
+
+# Track conversation
+options.track = True 
+
+# Use a proxy
+options.proxies = 'http://localhost:8080'
+
+# Optionally, you can pass a file path to save the conversation
+# They're created if they don't exist
+options.chat_log = "chat_log.txt"
+options.id_log = "id_log.txt"
+
+# Create a Chat object
+chat = Chat(email="email", password="password", options=options)
+answer = chat.ask("How are you?")
+print(answer)
+```
+
+[**NEW**] Resume a conversation
+```python
+from pychatgpt import Chat
+
+# Create a Chat object
+chat = Chat(email="email", password="password", conversation_id="Previous Conversation ID", previous_convo_id="Previous Conversation ID")
+answer = chat.ask("How are you?")
+print(answer)
+```
+Start a CLI Session
 ```python
 from pychatgpt import Chat
 
 chat = Chat(email="email", password="password")
 chat.cli_chat()
 ```
-### Usage
+
+Ask a one time question
 ```python
 from pychatgpt import Chat
 
@@ -82,21 +98,13 @@ chat = Chat(email="email", password="password")
 answer = chat.ask("Hello!")
 ```
 
-#### Usage with a proxy
-
-```python
-from pychatgpt import Chat
-
-chat = Chat(email="email", password="password", proxies="http://localhost:8080")  # proxy is optional, type: str or dict
-answer = chat.ask("Hello!")
-```
-
 #### You could also manually set, get the token
 ```python
+import time
 from pychatgpt import OpenAI
 
 # Manually set the token
-OpenAI.Auth.save_access_token(access_token="", expiry=0) 
+OpenAI.Auth.save_access_token(access_token="", expiry=time.time() + 3600)
 
 # Get the token, expiry
 access_token, expiry = OpenAI.Auth.get_access_token()
@@ -104,6 +112,29 @@ access_token, expiry = OpenAI.Auth.get_access_token()
 # Check if the token is valid
 is_expired = OpenAI.Auth.token_expired() # Returns True or False
 ```
+[//]: # (Add A changelog here)
+<details><summary>Change Log</summary>
+
+#### Update using `pip install chatgptpy --upgrade`
+
+#### 1.0.4
+- Fixes for part 8 of token authentication
+
+#### 1.0.3 
+- a new `options()` class method to set the options for the chat session
+- save the conversation to a file
+- resume the conversation even after closing the program
+
+
+#### 1.0.2
+- ChatGPT API switches from `action=next` to `action=variant`, frequently. This library is now using `action=variant` instead of `action=next` to get the next response from the API.
+- Sometimes when the server is overloaded, the API returns a `502 Bad Gateway` error.
+- Added Error handling if the auth.json file is not found/corrupt
+
+#### 1.0.0
+- Initial Release via PyPi
+</details>
+
 ### Other notes
 If the token creation process is failing:
 1. Try to use a proxy (I recommend using this always)
@@ -119,12 +150,19 @@ I'm planning to add a few more features, such as:
 - [ ] Multi-user chatting
 
 ### The whole process
+I have been looking for a way to interact with the new Chat GPT API, but most of the sources here on GitHub 
+require you to have a Chromium instance running in the background. or by using the Web Inspector to grab Access Token manually.
+
+No more. I have been able to reverse engineer the API and use a TLS client to mimic a real user, allowing the script to login without setting off any bot detection techniques by Auth0
+
+Basically, the script logs in on your behalf, using a TLS client, then grabs the Access Token. It's pretty fast.
+
 First, I'd like to tell you that "just making http" requests is not going to be enough, Auth0 is smart, each process is guarded by a 
 `state` token, which is a JWT token. This token is used to prevent CSRF attacks, and it's also used to prevent bots from logging in.
 If you look at the `auth.py` file, there are over nine functions, each one of them is responsible for a different task, and they all
 work together to create a token for you. `allow-redirects` played a huge role in this, as it allowed to navigate through the login process
 
-I work at MeshMonitors.io, We make amazing tools (Check it out yo!). I decided not to spend too much time on this, but here we are, I have been able to reverse engineer the API and use a TLS client to mimic a real user, allowing the script to login without setting off any bot detection techniques by Auth0
+I work at MeshMonitors.io, We make amazing tools (Check it out yo!). I decided not to spend too much time on this, but here we are.
 
 ### Why did I do this?
 No one has been able to do this, and I wanted to see if I could.
