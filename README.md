@@ -88,6 +88,44 @@ from pychatgpt import Chat
 chat = Chat(email="email", password="password")
 chat.cli_chat()
 ```
+Start a HTTP server Session
+```python
+from pychatgpt import Chat
+
+chat = Chat(email="email", password="password")
+chat.server_chat() # host:str="127.0.0.1", port:int=8000
+```
+
+<details>
+<summary>Click to toggle HTTP requests and answers >></summary>   
+   
+1. GET `http://host:port/{prompt}` returns a `JSONResponse` 
+
+```json
+{
+    "answer": "{answer}",
+    "conversation": "{conversation_id}"
+}
+```
+
+2. POST `http://host:port/` with an `application/json` body of
+```json
+{
+    "prompt": "{prompt}",
+    "conversation": "{conversation_id}" (optional)
+}
+```  
+returns a `JSONResponse`  
+
+```json
+{
+    "answer": "{answer}",
+    "conversation": "{conversation_id}"
+}
+```
+
+*Note: conversation not implemented yet*
+</details>
 
 Ask a one time question
 ```python
