@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Builtins
+import sys
 import time
 import os
 from queue import Queue
@@ -52,6 +53,9 @@ class Chat:
             with open(file, 'w') as f:
                 f.write("")
 
+    def log(self, str):
+        print(str, file=sys.stderr)
+
     def _setup(self):
         if self.options is not None:
             # If track is enabled, create the chat log and id log files if they don't exist
@@ -81,10 +85,10 @@ class Chat:
                         raise Exceptions.PyChatGPTException("Proxies must be a string or dictionary.")
                     else:
                         self.proxies = {"http": self.options.proxies, "https": self.options.proxies}
-                        print(f"{Fore.GREEN}>> Using proxies: True.")
+                        self.log(f"{Fore.GREEN}>> Using proxies: True.")
 
             if self.options.track:
-                print(f"{Fore.GREEN}>> Tracking conversation enabled.")
+                self.log(f"{Fore.GREEN}>> Tracking conversation enabled.")
                 if not isinstance(self.options.chat_log, str) or not isinstance(self.options.id_log, str):
                     raise Exceptions.PyChatGPTException(
                         "When saving a chat, file paths for chat_log and id_log must be strings.")
@@ -98,15 +102,15 @@ class Chat:
 
 
         if not self.email or not self.password:
-            print(f"{Fore.RED}>> You must provide an email and password when initializing the class.")
+            self.log(f"{Fore.RED}>> You must provide an email and password when initializing the class.")
             raise Exceptions.PyChatGPTException("You must provide an email and password when initializing the class.")
 
         if not isinstance(self.email, str) or not isinstance(self.password, str):
-            print(f"{Fore.RED}>> Email and password must be strings.")
+            self.log(f"{Fore.RED}>> Email and password must be strings.")
             raise Exceptions.PyChatGPTException("Email and password must be strings.")
 
         if len(self.email) == 0 or len(self.password) == 0:
-            print(f"{Fore.RED}>> Email cannot be empty.")
+            self.log(f"{Fore.RED}>> Email cannot be empty.")
             raise Exceptions.PyChatGPTException("Email cannot be empty.")
 
         if self.options is not None and self.options.track:
@@ -125,7 +129,7 @@ class Chat:
 
         # Check for access_token & access_token_expiry in env
         if OpenAI.token_expired():
-            print(f"{Fore.RED}>> Access Token missing or expired."
+            self.log(f"{Fore.RED}>> Access Token missing or expired."
                   f" {Fore.GREEN}Attempting to create them...")
             self._create_access_token()
         else:
@@ -136,11 +140,11 @@ class Chat:
             try:
                 self.__auth_access_token_expiry = int(self.__auth_access_token_expiry)
             except ValueError:
-                print(f"{Fore.RED}>> Expiry is not an integer.")
+                self.log(f"{Fore.RED}>> Expiry is not an integer.")
                 raise Exceptions.PyChatGPTException("Expiry is not an integer.")
 
             if self.__auth_access_token_expiry < time.time():
-                print(f"{Fore.RED}>> Your access token is expired. {Fore.GREEN}Attempting to recreate it...")
+                self.log(f"{Fore.RED}>> Your access token is expired. {Fore.GREEN}Attempting to recreate it...")
                 self._create_access_token()
 
     def _create_access_token(self) -> bool:
@@ -150,7 +154,7 @@ class Chat:
         # If after creating the token, it's still expired, then something went wrong.
         is_still_expired = OpenAI.token_expired()
         if is_still_expired:
-            print(f"{Fore.RED}>> Failed to create access token.")
+            self.log(f"{Fore.RED}>> Failed to create access token.")
             return False
 
         # If created, then return True
@@ -158,7 +162,7 @@ class Chat:
 
     def ask(self, prompt: str, rep_queue: Queue or None = None) -> str or None:
         if prompt is None:
-            print(f"{Fore.RED}>> Enter a prompt.")
+            self.log(f"{Fore.RED}>> Enter a prompt.")
             raise Exceptions.PyChatGPTException("Enter a prompt.")
 
         if not isinstance(prompt, str):
@@ -172,12 +176,12 @@ class Chat:
 
         # Check if the access token is expired
         if OpenAI.token_expired():
-            print(f"{Fore.RED}>> Your access token is expired. {Fore.GREEN}Attempting to recreate it...")
+            self.log(f"{Fore.RED}>> Your access token is expired. {Fore.GREEN}Attempting to recreate it...")
             did_create = self._create_access_token()
             if did_create:
-                print(f"{Fore.GREEN}>> Successfully recreated access token.")
+                self.log(f"{Fore.GREEN}>> Successfully recreated access token.")
             else:
-                print(f"{Fore.RED}>> Failed to recreate access token.")
+                self.log(f"{Fore.RED}>> Failed to recreate access token.")
                 raise Exceptions.PyChatGPTException("Failed to recreate access token.")
 
         # Get access token
@@ -194,7 +198,7 @@ class Chat:
             rep_queue.put((prompt, answer))
 
         if answer == "400" or answer == "401":
-            print(f"{Fore.RED}>> Failed to get a response from the API.")
+            self.log(f"{Fore.RED}>> Failed to get a response from the API.")
             return None
 
         self.conversation_id = convo_id
@@ -219,7 +223,7 @@ class Chat:
                     f.write(str(self.conversation_id) + "\n")
 
             except Exception as ex:
-                print(f"{Fore.RED}>> Failed to save chat and ids to chat log and id_log."
+                self.log(f"{Fore.RED}>> Failed to save chat and ids to chat log and id_log."
                       f"{ex}")
             finally:
                 self.__chat_history = []
@@ -231,22 +235,22 @@ class Chat:
         :return:
         """
         if rep_queue is not None and not isinstance(rep_queue, Queue):
-            print(f"{Fore.RED}>> Entered a non-queue object to hold responses for another thread.")
+            self.log(f"{Fore.RED}>> Entered a non-queue object to hold responses for another thread.")
             raise Exceptions.PyChatGPTException("Cannot enter a non-queue object as the response queue for threads.")
 
         # Check if the access token is expired
         if OpenAI.token_expired():
-            print(f"{Fore.RED}>> Your access token is expired. {Fore.GREEN}Attempting to recreate it...")
+            self.log(f"{Fore.RED}>> Your access token is expired. {Fore.GREEN}Attempting to recreate it...")
             did_create = self._create_access_token()
             if did_create:
-                print(f"{Fore.GREEN}>> Successfully recreated access token.")
+                self.log(f"{Fore.GREEN}>> Successfully recreated access token.")
             else:
-                print(f"{Fore.RED}>> Failed to recreate access token.")
+                self.log(f"{Fore.RED}>> Failed to recreate access token.")
                 raise Exceptions.PyChatGPTException("Failed to recreate access token.")
         else:
-            print(f"{Fore.GREEN}>> Access token is valid.")
-            print(f"{Fore.GREEN}>> Starting CLI chat session...")
-            print(f"{Fore.GREEN}>> Type 'exit' to exit the chat session.")
+            self.log(f"{Fore.GREEN}>> Access token is valid.")
+            self.log(f"{Fore.GREEN}>> Starting CLI chat session...")
+            self.log(f"{Fore.GREEN}>> Type 'exit' to exit the chat session.")
 
 
         # Get access token
@@ -271,7 +275,7 @@ class Chat:
                     rep_queue.put((prompt, answer))
 
                 if answer == "400" or answer == "401":
-                    print(f"{Fore.RED}>> Failed to get a response from the API.")
+                    self.log(f"{Fore.RED}>> Failed to get a response from the API.")
                     return None
 
                 self.conversation_id = convo_id
