@@ -22,6 +22,9 @@
 - [x] Uses colorama to colorize the output, because why not?
 - [x] Smart Conversation Tracking 
 
+## Web Demo
+Integrated into [Huggingface Spaces 🤗](https://huggingface.co/spaces) using [Gradio](https://github.com/gradio-app/gradio). Try out the Web Demo [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/yizhangliu/chatGPT)
+
 <p align="center">Chatting</p>
 
 ![Screenshot 1](https://media.discordapp.net/attachments/1038565125482881027/1049255804366237736/image.png)
