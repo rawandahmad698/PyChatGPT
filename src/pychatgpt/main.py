@@ -184,9 +184,9 @@ class Chat:
         access_token = OpenAI.get_access_token()
 
         # Set conversation IDs if supplied
-        if previous_convo_id is not None:
+        if previous_convo_id is not None and len(conversation_id) == 0:
             self.previous_convo_id = previous_convo_id
-        if conversation_id is not None:
+        if conversation_id is not None and len(conversation_id) == 0:
             self.conversation_id = conversation_id
 
 
