@@ -61,7 +61,7 @@ class Chat:
             if self.options.track:
                 if self.options.chat_log is not None:
                     self._create_if_not_exists(os.path.abspath(self.options.chat_log))
-                    self.options.id_log = os.path.abspath(self.options.chat_log)
+                    self.options.chat_log = os.path.abspath(self.options.chat_log)
                 else:
                     # Create a chat log file called chat_log.txt
                     self.options.chat_log = "chat_log.txt"
