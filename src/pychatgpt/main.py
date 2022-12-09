@@ -211,7 +211,7 @@ class Chat:
             self.save_data()
 
 
-        return answer
+        return answer, previous_convo
 
     def save_data(self):
         if self.options.track:
