@@ -156,7 +156,7 @@ class Chat:
         # If created, then return True
         return True
 
-    def ask(self, prompt: str, rep_queue: Queue or None = None) -> str or None:
+    def ask(self, prompt: str, previous_convo_id: str or None, conversation_id: str or None, rep_queue: Queue or None = None) -> str or None:
         if prompt is None:
             print(f"{Fore.RED}>> Enter a prompt.")
             raise Exceptions.PyChatGPTException("Enter a prompt.")
@@ -182,6 +182,12 @@ class Chat:
 
         # Get access token
         access_token = OpenAI.get_access_token()
+
+        # Set conversation IDs if supplied
+        if previous_convo_id is not None:
+            self.previous_convo_id = previous_convo_id
+        if conversation_id is not None:
+            self.conversation_id = conversation_id
 
 
         answer, previous_convo, convo_id = ChatHandler.ask(auth_token=access_token,
