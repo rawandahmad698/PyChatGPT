@@ -156,7 +156,7 @@ class Chat:
         # If created, then return True
         return True
 
-    def ask(self, prompt: str, previous_convo_id: str or None, conversation_id: str or None, rep_queue: Queue or None = None) -> str or None:
+    def ask(self, prompt: str, previous_convo_id: str or None = None, conversation_id: str or None = None, rep_queue: Queue or None = None) -> str or None:
         if prompt is None:
             print(f"{Fore.RED}>> Enter a prompt.")
             raise Exceptions.PyChatGPTException("Enter a prompt.")
