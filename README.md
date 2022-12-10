@@ -60,6 +60,9 @@ from pychatgpt import Chat, Options
 
 options = Options()
 
+# [New] Enable, Disable logs
+options.logs = True
+
 # Track conversation
 options.track = True 
 
@@ -68,8 +71,9 @@ options.proxies = 'http://localhost:8080'
 
 # Optionally, you can pass a file path to save the conversation
 # They're created if they don't exist
-options.chat_log = "chat_log.txt"
-options.id_log = "id_log.txt"
+
+# options.chat_log = "chat_log.txt"
+# options.id_log = "id_log.txt"
 
 # Create a Chat object
 chat = Chat(email="email", password="password", options=options)
@@ -82,9 +86,20 @@ print(answer)
 from pychatgpt import Chat
 
 # Create a Chat object
-chat = Chat(email="email", password="password", conversation_id="Previous Conversation ID", previous_convo_id="Previous Conversation ID")
+chat = Chat(email="email", password="password", 
+            conversation_id="Parent Conversation ID", 
+            previous_convo_id="Previous Conversation ID")
+
 answer, parent_conversation_id, conversation_id = chat.ask("How are you?")
+
 print(answer)
+
+# Or change the conversation id later
+answer, _, _ = chat.ask("How are you?", 
+                        previous_convo_id="Parent Conversation ID",
+                        conversation_id="Previous Conversation ID")
+print(answer)
+
 ```
 Start a CLI Session
 ```python
