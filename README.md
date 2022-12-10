@@ -124,7 +124,7 @@ import time
 from pychatgpt import OpenAI
 
 # Manually set the token
-OpenAI.Auth(email="email", password="password").save_access_token(access_token="", expiry=time.time() + 3600)
+OpenAI.Auth(email_address="email", password="password").save_access_token(access_token="", expiry=time.time() + 3600)
 
 # Get the token, expiry
 access_token, expiry = OpenAI.get_access_token()
