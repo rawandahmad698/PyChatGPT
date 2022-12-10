@@ -83,7 +83,7 @@ from pychatgpt import Chat
 
 # Create a Chat object
 chat = Chat(email="email", password="password", conversation_id="Previous Conversation ID", previous_convo_id="Previous Conversation ID")
-answer = chat.ask("How are you?")
+answer, parent_conversation_id, conversation_id = chat.ask("How are you?")
 print(answer)
 ```
 Start a CLI Session
@@ -100,7 +100,7 @@ from pychatgpt import Chat
 
 # Initializing the chat class will automatically log you in, check access_tokens
 chat = Chat(email="email", password="password") 
-answer = chat.ask("Hello!")
+answer, parent_conversation_id, conversation_id = chat.ask("Hello!")
 ```
 
 #### You could also manually set, get the token
@@ -109,18 +109,27 @@ import time
 from pychatgpt import OpenAI
 
 # Manually set the token
-OpenAI.Auth.save_access_token(access_token="", expiry=time.time() + 3600)
+OpenAI.Auth(email="email", password="password").save_access_token(access_token="", expiry=time.time() + 3600)
 
 # Get the token, expiry
-access_token, expiry = OpenAI.Auth.get_access_token()
+access_token, expiry = OpenAI.get_access_token()
 
 # Check if the token is valid
-is_expired = OpenAI.Auth.token_expired() # Returns True or False
+is_expired = OpenAI.token_expired() # Returns True or False
 ```
 [//]: # (Add A changelog here)
 <details><summary>Change Log</summary>
 
 #### Update using `pip install chatgptpy --upgrade`
+### 1.0.6
+- New option to turn off logs. 
+- Better Error handling.
+- Enhanced conversation tracking
+- Ask now returns a tuple of `answer, previous_convo, convo_id` 
+- Better docs
+
+### 1.0.5
+- Pull requests/minor fixes
 
 #### 1.0.4
 - Fixes for part 8 of token authentication
