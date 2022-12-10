@@ -6,6 +6,7 @@ import sys
 import time
 import os
 from queue import Queue
+from typing import Tuple
 
 # Local
 from .classes import openai as OpenAI
@@ -21,6 +22,7 @@ colorama.init(autoreset=True)
 
 class Options:
     def __init__(self):
+        self.log: bool = True
         self.proxies: str or dict or None = None
         self.track: bool or None = False
         self.verify: bool = True
@@ -53,14 +55,17 @@ class Chat:
             with open(file, 'w') as f:
                 f.write("")
 
-    def log(self, str):
-        print(str, file=sys.stderr)
+    def log(self, inout):
+        if self.options is not None and self.options.log:
+            print(inout, file=sys.stderr)
 
     def _setup(self):
         if self.options is not None:
             # If track is enabled, create the chat log and id log files if they don't exist
             if not isinstance(self.options.track, bool):
                 raise Exceptions.PyChatGPTException("Options to track conversation must be a boolean.")
+            if not isinstance(self.options.log, bool):
+                raise Exceptions.PyChatGPTException("Options to log must be a boolean.")
 
             if self.options.track:
                 if self.options.chat_log is not None:
@@ -160,7 +165,12 @@ class Chat:
         # If created, then return True
         return True
 
-    def ask(self, prompt: str, previous_convo_id: str or None = None, conversation_id: str or None = None, rep_queue: Queue or None = None) -> str or None:
+    def ask(self, prompt: str,
+            previous_convo_id: str or None = None,
+            conversation_id: str or None = None,
+            rep_queue: Queue or None = None
+            ) -> Tuple[str or None, str or None, str or None] or None:
+
         if prompt is None:
             self.log(f"{Fore.RED}>> Enter a prompt.")
             raise Exceptions.PyChatGPTException("Enter a prompt.")
@@ -214,8 +224,7 @@ class Chat:
             self.__chat_history.append("Chat GPT: " + answer)
             self.save_data()
 
-
-        return (answer, previous_convo, convo_id)
+        return answer, previous_convo, convo_id
 
     def save_data(self):
         if self.options.track:

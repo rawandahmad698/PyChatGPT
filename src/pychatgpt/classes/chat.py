@@ -1,5 +1,6 @@
 # Builtins
 import json
+import os
 import re
 import uuid
 from typing import Tuple
@@ -75,6 +76,10 @@ def ask(
             as_json = json.loads(data)
             return as_json["message"]["content"]["parts"][0], as_json["message"]["id"], as_json["conversation_id"]
         elif response.status_code == 401:
+            # Check if auth.json exists, if so, delete it
+            if os.path.exists("auth.json"):
+                os.remove("auth.json")
+
             return f"[Status Code] 401 | [Response Text] {response.text}", None, None
         elif response.status_code >= 500:
             print(">> Looks like the server is either overloaded or down. Try again later.")
