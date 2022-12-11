@@ -1,5 +1,5 @@
 # 🔥 PyChatGPT
-#### 😶‍🌫️ OpenAI shadow-bans requests through <strong>bots/scrapers</strong>. This applies to all current scrapers/bots out there, I have confirmed this.. but not with this script! 😎
+#### 😶‍🌫️ [Confirmed] OpenAI shadow-bans requests through <strong>bots/scrapers</strong>. This applies to all current scrapers/bots out there, but not with this script! 😎
 
 [Read More - How OpenAI filters requests made by bots/scrapers](https://github.com/rawandahmad698/PyChatGPT/discussions/103)
 
