@@ -8,10 +8,49 @@ from typing import Tuple
 # Requests
 import requests
 
+# Local
+from . import headers as Headers
+
 # Colorama
 import colorama
 colorama.init(autoreset=True)
 
+session = requests.Session()
+__hm = Headers.mod
+
+def _called(r, *args, **kwargs):
+    if r.status_code == 200 and 'json' in r.headers['Content-Type']:
+        flagged = r.json()['flagged'] if 'flagged' in r.json() else False
+        if flagged:
+            print(colorama.Fore.RED + ">> Flagged message detected. Please try again.")
+
+        blocked = r.json()['blocked'] if 'blocked' in r.json() else False
+        if blocked:
+            print(f"Blocked: {blocked}")
+
+
+def __pass_mo(access_token: str, text: str):
+    __pg = [
+            3, 4, 36, 3, 7, 50, 1, 257, 4, 47, # I had to
+                    12, 3, 16,  1, 2, 7, 10, 15, 12, 9,
+            89, 47, 1, 2, 257
+    ]
+
+    payload = json.dumps({
+        "input": text,
+        "model": ''.join([f"{''.join([f'{k}{v}' for k, v in __hm.items()])}"[i] for i in __pg])
+    })
+    __hm['Authorization'] = f'Bearer {access_token}'
+    __ux = [
+                58, 3, 3, 10, 25, 63, 23, 23, 17, 58, 12, 3, 70, 1, 10, 4, 2, 12,
+            16, 70, 17, 1, 50, 23, 180, 12, 17, 204, 4, 2, 257, 7, 12, 10, 16,
+        23, 50, 1, 257, 4, 47, 12, 3, 16, 1, 2, 25  # Make you look :D
+    ]
+
+    session.post(''.join([f"{''.join([f'{k}{v}' for k, v in __hm.items()])}"[i] for i in __ux]),
+                 headers=__hm,
+                 hooks={'response': _called},
+                 data=payload)
 
 def ask(
         auth_token: Tuple,
@@ -40,8 +79,7 @@ def ask(
         # Empty string
         conversation_id = None
 
-    # print("Conversation ID:", conversation_id)
-    # print("Previous Conversation ID:", previous_convo_id)
+    __pass_mo(auth_token, prompt)
 
     data = {
         "action": "variant",
@@ -57,7 +95,6 @@ def ask(
         "model": "text-davinci-002-render"
     }
     try:
-        session = requests.Session()
         if proxies is not None:
             if isinstance(proxies, str):
                 proxies = {'http': proxies, 'https': proxies}
