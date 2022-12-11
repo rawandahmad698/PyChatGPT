@@ -413,9 +413,9 @@ class Auth:
                 content = f.read()
                 account_dict = {} if content == '' else json.loads(content)
                 f.close()
-            with open(path, "w") as f:
-                account_dict[email] = {"access_token": access_token, "expires_at": expiry}
-                f.write(json.dumps(account_dict))
+                with open(path, "w") as file:
+                    account_dict[email] = {"access_token": access_token, "expires_at": expiry}
+                    file.write(json.dumps(account_dict))
 
             print(f"{Fore.GREEN}[OpenAI][8] {Fore.WHITE}Saved access token")
         except Exception as e:
