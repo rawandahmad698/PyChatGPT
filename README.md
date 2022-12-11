@@ -1,4 +1,7 @@
 # 🔥 PyChatGPT
+#### 😶‍🌫️ OpenAI shadow-bans requests through <strong>bots/scrapers</strong>. This applies to all current scrapers/bots out there, I have confirmed this.. but guess what? I have created a bypass. Watch this repo for the next release
+
+[Discussion](https://github.com/rawandahmad698/PyChatGPT/issues/78)
 
 [![Python](https://img.shields.io/badge/python-3.8-blue.svg)](https://img.shields.io/badge/python-3.8-blue.svg)
 [![PyPi](https://img.shields.io/pypi/v/chatgptpy.svg)](https://pypi.python.org/pypi/chatgptpy)
@@ -60,6 +63,9 @@ from pychatgpt import Chat, Options
 
 options = Options()
 
+# [New] Enable, Disable logs
+options.log = True
+
 # Track conversation
 options.track = True 
 
@@ -68,8 +74,9 @@ options.proxies = 'http://localhost:8080'
 
 # Optionally, you can pass a file path to save the conversation
 # They're created if they don't exist
-options.chat_log = "chat_log.txt"
-options.id_log = "id_log.txt"
+
+# options.chat_log = "chat_log.txt"
+# options.id_log = "id_log.txt"
 
 # Create a Chat object
 chat = Chat(email="email", password="password", options=options)
@@ -82,9 +89,20 @@ print(answer)
 from pychatgpt import Chat
 
 # Create a Chat object
-chat = Chat(email="email", password="password", conversation_id="Previous Conversation ID", previous_convo_id="Previous Conversation ID")
-answer = chat.ask("How are you?")
+chat = Chat(email="email", password="password", 
+            conversation_id="Parent Conversation ID", 
+            previous_convo_id="Previous Conversation ID")
+
+answer, parent_conversation_id, conversation_id = chat.ask("How are you?")
+
 print(answer)
+
+# Or change the conversation id later
+answer, _, _ = chat.ask("How are you?", 
+                        previous_convo_id="Parent Conversation ID",
+                        conversation_id="Previous Conversation ID")
+print(answer)
+
 ```
 Start a CLI Session
 ```python
@@ -100,7 +118,7 @@ from pychatgpt import Chat
 
 # Initializing the chat class will automatically log you in, check access_tokens
 chat = Chat(email="email", password="password") 
-answer = chat.ask("Hello!")
+answer, parent_conversation_id, conversation_id = chat.ask("Hello!")
 ```
 
 #### You could also manually set, get the token
@@ -109,18 +127,27 @@ import time
 from pychatgpt import OpenAI
 
 # Manually set the token
-OpenAI.Auth.save_access_token(access_token="", expiry=time.time() + 3600)
+OpenAI.Auth(email_address="email", password="password").save_access_token(access_token="", expiry=time.time() + 3600)
 
 # Get the token, expiry
-access_token, expiry = OpenAI.Auth.get_access_token()
+access_token, expiry = OpenAI.get_access_token()
 
 # Check if the token is valid
-is_expired = OpenAI.Auth.token_expired() # Returns True or False
+is_expired = OpenAI.token_expired() # Returns True or False
 ```
 [//]: # (Add A changelog here)
 <details><summary>Change Log</summary>
 
 #### Update using `pip install chatgptpy --upgrade`
+### 1.0.6
+- New option to turn off logs. 
+- Better Error handling.
+- Enhanced conversation tracking
+- Ask now returns a tuple of `answer, previous_convo, convo_id` 
+- Better docs
+
+### 1.0.5
+- Pull requests/minor fixes
 
 #### 1.0.4
 - Fixes for part 8 of token authentication
