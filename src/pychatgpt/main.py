@@ -122,7 +122,7 @@ class Chat:
             try:
                 with open(self.options.id_log, "r") as f:
                     # Check if there's any data in the file
-                    if len(f.read()) > 0:
+                    if os.path.getsize(self.options.id_log) > 0:
                         self.previous_convo_id = f.readline().strip()
                         self.conversation_id = f.readline().strip()
                     else:
