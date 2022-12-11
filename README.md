@@ -64,7 +64,7 @@ from pychatgpt import Chat, Options
 options = Options()
 
 # [New] Enable, Disable logs
-options.logs = True
+options.log = True
 
 # Track conversation
 options.track = True 
