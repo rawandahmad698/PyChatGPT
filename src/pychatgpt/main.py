@@ -26,8 +26,14 @@ class Options:
         self.proxies: str or dict or None = None
         self.track: bool or None = False
         self.verify: bool = True
+        self.pass_moderation: bool = False
         self.chat_log: str or None = None
         self.id_log: str or None = None
+
+    def __repr__(self):
+        return f"<Options log={self.log} proxies={self.proxies} track={self.track} " \
+               f"verify={self.verify} pass_moderation={self.pass_moderation} " \
+               f"chat_log={self.chat_log} id_log={self.id_log}>"
 
 class Chat:
     def __init__(self,
@@ -203,11 +209,11 @@ class Chat:
         if conversation_id is not None:
             self.conversation_id = conversation_id
 
-        answer, previous_convo, convo_id = ChatHandler.ask(auth_token=access_token,
-                                                           prompt=prompt,
+        answer, previous_convo, convo_id = ChatHandler.ask(auth_token=access_token, prompt=prompt,
                                                            conversation_id=self.conversation_id,
                                                            previous_convo_id=self.previous_convo_id,
-                                                           proxies=self.options.proxies)
+                                                           proxies=self.options.proxies,
+                                                           pass_moderation=self.options.pass_moderation)
 
         if rep_queue is not None:
             rep_queue.put((prompt, answer))
@@ -279,11 +285,11 @@ class Chat:
 
                 spinner = Spinner.Spinner()
                 spinner.start(Fore.YELLOW + "Chat GPT is typing...")
-                answer, previous_convo, convo_id = ChatHandler.ask(auth_token=access_token,
-                                                                   prompt=prompt,
+                answer, previous_convo, convo_id = ChatHandler.ask(auth_token=access_token, prompt=prompt,
                                                                    conversation_id=self.conversation_id,
                                                                    previous_convo_id=self.previous_convo_id,
-                                                                   proxies=self.options.proxies)
+                                                                   proxies=self.options.proxies,
+                                                                   pass_moderation=self.options.pass_moderation)
 
                 if rep_queue is not None:
                     rep_queue.put((prompt, answer))

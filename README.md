@@ -63,6 +63,9 @@ from pychatgpt import Chat, Options
 
 options = Options()
 
+# [New] Pass Moderation. https://github.com/rawandahmad698/PyChatGPT/discussions/103
+# options.pass_moderation = False
+
 # [New] Enable, Disable logs
 options.log = True
 
@@ -139,18 +142,24 @@ is_expired = OpenAI.token_expired() # Returns True or False
 <details><summary>Change Log</summary>
 
 #### Update using `pip install chatgptpy --upgrade`
-### 1.0.7
+
+#### 1.0.8
+- Fixes an issue when reading from id_log.txt
+- Introduces a new `pass_moderation` parameter to the `options()` class, defaults to `False`
+- Adds proxies to moderation.
+- If `pass_moderation` is True, the function is invoked in another thread, so it doesn't block the main thread.
+
+#### 1.0.7
 - Make a request to the mod endpoint first, otherwise a crippled version of the response is returned
 
-
-### 1.0.6
+#### 1.0.6
 - New option to turn off logs. 
 - Better Error handling.
 - Enhanced conversation tracking
 - Ask now returns a tuple of `answer, previous_convo, convo_id` 
 - Better docs
 
-### 1.0.5
+#### 1.0.5
 - Pull requests/minor fixes
 
 #### 1.0.4

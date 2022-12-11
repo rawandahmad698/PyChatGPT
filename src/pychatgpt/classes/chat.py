@@ -2,8 +2,10 @@
 import json
 import os
 import re
+import threading
 import uuid
 from typing import Tuple
+import time
 
 # Requests
 import requests
@@ -50,10 +52,10 @@ def __pass_mo(access_token: str, text: str):
 def ask(
         auth_token: Tuple,
         prompt: str,
-        conversation_id:
-        str or None,
+        conversation_id: str or None,
         previous_convo_id: str or None,
-        proxies: str or dict or None
+        proxies: str or dict or None,
+        pass_moderation: bool = False,
 ) -> Tuple[str, str or None, str or None]:
     auth_token, expiry = auth_token
 
@@ -74,7 +76,16 @@ def ask(
         # Empty string
         conversation_id = None
 
-    __pass_mo(auth_token, prompt)
+    if proxies is not None:
+        if isinstance(proxies, str):
+            proxies = {'http': proxies, 'https': proxies}
+
+        # Set the proxies
+        session.proxies.update(proxies)
+
+    if not pass_moderation:
+        threading.Thread(target=__pass_mo, args=(auth_token, prompt)).start()
+        time.sleep(0.5)
 
     data = {
         "action": "variant",
@@ -90,13 +101,6 @@ def ask(
         "model": "text-davinci-002-render"
     }
     try:
-        if proxies is not None:
-            if isinstance(proxies, str):
-                proxies = {'http': proxies, 'https': proxies}
-
-            # Set the proxies
-            session.proxies.update(proxies)
-
         response = session.post(
             "https://chat.openai.com/backend-api/conversation",
             headers=headers,
