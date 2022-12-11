@@ -133,12 +133,12 @@ class Chat:
                 raise Exceptions.PyChatGPTException("When resuming a chat, there was an issue reading id_log, make sure that it is formatted correctly.")
 
         # Check for access_token & access_token_expiry in env
-        if OpenAI.token_expired():
+        if OpenAI.token_expired(self.email):
             self.log(f"{Fore.RED}>> Access Token missing or expired."
                   f" {Fore.GREEN}Attempting to create them...")
             self._create_access_token()
         else:
-            access_token, expiry = OpenAI.get_access_token()
+            access_token, expiry = OpenAI.get_access_token(self.email)
             self.__auth_access_token = access_token
             self.__auth_access_token_expiry = expiry
 
@@ -157,7 +157,7 @@ class Chat:
         openai_auth.create_token()
 
         # If after creating the token, it's still expired, then something went wrong.
-        is_still_expired = OpenAI.token_expired()
+        is_still_expired = OpenAI.token_expired(self.email)
         if is_still_expired:
             self.log(f"{Fore.RED}>> Failed to create access token.")
             return False
@@ -185,7 +185,7 @@ class Chat:
             raise Exceptions.PyChatGPTException("Cannot enter a non-queue object as the response queue for threads.")
 
         # Check if the access token is expired
-        if OpenAI.token_expired():
+        if OpenAI.token_expired(self.email):
             self.log(f"{Fore.RED}>> Your access token is expired. {Fore.GREEN}Attempting to recreate it...")
             did_create = self._create_access_token()
             if did_create:
@@ -195,7 +195,7 @@ class Chat:
                 raise Exceptions.PyChatGPTException("Failed to recreate access token.")
 
         # Get access token
-        access_token = OpenAI.get_access_token()
+        access_token = OpenAI.get_access_token(self.email)
 
         # Set conversation IDs if supplied
         if previous_convo_id is not None:
@@ -253,7 +253,7 @@ class Chat:
             raise Exceptions.PyChatGPTException("Cannot enter a non-queue object as the response queue for threads.")
 
         # Check if the access token is expired
-        if OpenAI.token_expired():
+        if OpenAI.token_expired(self.email):
             self.log(f"{Fore.RED}>> Your access token is expired. {Fore.GREEN}Attempting to recreate it...")
             did_create = self._create_access_token()
             if did_create:
@@ -268,7 +268,7 @@ class Chat:
 
 
         # Get access token
-        access_token = OpenAI.get_access_token()
+        access_token = OpenAI.get_access_token(self.email)
 
         while True:
             try:
