@@ -5,3 +5,5 @@ svglib~=1.4.1
 bs4~=0.0.1
 beautifulsoup4~=4.10.0
 reportlab~=3.6.12
+fastapi~=0.88.0
+uvicorn~=0.20.0

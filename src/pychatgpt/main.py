@@ -17,7 +17,14 @@ from .classes import exceptions as Exceptions
 # Fancy stuff
 import colorama
 from colorama import Fore
+from typing import Union
+from fastapi import FastAPI, APIRouter
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+import uvicorn
 
+app = FastAPI() # A fast api framework
 colorama.init(autoreset=True)
 
 class Options:
@@ -29,6 +36,12 @@ class Options:
         self.chat_log: str or None = None
         self.id_log: str or None = None
 
+class PostItem(BaseModel):
+    prompt: str
+    conversation: Union[int, None] = None # TODO: conversation
+
+colorama.init(autoreset=True)
+# @cbv(router) # to embed api in a class
 class Chat:
     def __init__(self,
                  email: str,
@@ -42,6 +55,12 @@ class Chat:
 
         self.conversation_id = conversation_id
         self.previous_convo_id = previous_convo_id
+
+        self.router = APIRouter() # to resolve the issue of fastapi decorations
+        self.router.add_api_route("/{prompt}", self.http_get, methods=["GET"])
+        self.router.add_api_route("/", self.http_get_default, methods=["GET"])
+        self.router.add_api_route("/", self.http_post, methods=["POST"])
+        app.include_router(self.router) # manually add the router to the app, althoug not elegant
 
         self.__auth_access_token: str or None = None
         self.__auth_access_token_expiry: int or None = None
@@ -241,6 +260,80 @@ class Chat:
                       f"{ex}")
             finally:
                 self.__chat_history = []
+
+    # Respond to HTTP GET requests at /
+    async def http_get_default(self) -> JSONResponse:
+        """
+        GET: "http://host:port/"
+        Returns: JSONResponse {
+            "error": "Missing query. e.g {host:port/{your_query}"
+        }
+        """
+        return jsonable_encoder({"error": "Missing query. e.g {host:port/{your_query}"})
+    
+    
+    # Respond to HTTP GET requests at /{prompt}
+    async def http_get(self, prompt: str) -> JSONResponse:
+        """
+        #TODO: conversation queue
+        GET: "http://host:port/{prompt}"
+        Returns: JSONResponse {
+            "answer": "{answer}",
+            "conversation": "{conversation_id}"
+        }
+        """
+        if prompt is None or len(prompt) == 0 or prompt == " ":
+            return jsonable_encoder({"error": "Missing query. e.g {host:port/{your_query}"})
+        else:
+            print(f"GET: {prompt}")
+            answer =  self.ask(prompt)
+            if answer is None:
+                print(f"{Fore.RED}>> Failed to get a response from the API.")
+                return jsonable_encoder({"error": "Failed to get a response from the API."})
+            else:
+                print(f"Chat GPT: {answer}")
+                if self.options.track:
+                    self.__chat_history.append("GET: " + prompt)
+                    self.__chat_history.append("Chat GPT: " + answer)
+                return jsonable_encoder({"answer": answer, "conversation":self.conversation_id})
+    
+    # Respond to HTTP POST requests
+    async def http_post(self, request: PostItem) -> JSONResponse:
+        """
+        #TODO: conversation queue
+        POST: "http://host:port/" with a application/json {
+            "prompt": "{prompt}",
+            "conversation": "{conversation_id}" (optional)
+            }
+        Returns: JSONResponse {
+            "answer": "{answer}",
+            "conversation": "{conversation_id}"
+        }
+        """
+        prompt = request.prompt
+        if prompt is None or len(prompt) == 0 or prompt == " ":
+            return jsonable_encoder({"error": "Missing or invalid query. e.g POST {'prompt': 'your query'} to host:port"})
+        else:
+            print(f"POST: {prompt}")
+            answer =  self.ask(prompt)
+            if answer is None:
+                print(f"{Fore.RED}>> Failed to get a response from the API.")
+                return jsonable_encoder({"error": "Failed to get a response from the API."})
+            else:
+                print(f"Chat GPT: {answer}")
+                if self.options.track:
+                    self.__chat_history.append("POST: " + prompt)
+                    self.__chat_history.append("Chat GPT: " + answer)
+                return jsonable_encoder({"answer": answer, "conversation": self.conversation_id})
+
+    def server_chat(self, host:str="127.0.0.1", port:int=8000)->None:
+        """
+        Start a CLI chat session.
+        :param rep_queue:  A queue to put the prompt and response in.
+        :return:
+        """
+        print(f"{Fore.GREEN}>> Server running at {host}:{port}...")
+        uvicorn.run(app, host=host, port=port)
 
     def cli_chat(self, rep_queue: Queue or None = None):
         """
