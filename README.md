@@ -1,4 +1,7 @@
 # 🔥 PyChatGPT
+#### 😶‍🌫️ OpenAI shadow-bans requests through <strong>bots/scrapers</strong>. This applies to all current scrapers/bots out there, I have confirmed this.. but guess what? I have created a bypass. Watch this repo for the next release
+
+[Discussion](https://github.com/rawandahmad698/PyChatGPT/issues/78)
 
 [![Python](https://img.shields.io/badge/python-3.8-blue.svg)](https://img.shields.io/badge/python-3.8-blue.svg)
 [![PyPi](https://img.shields.io/pypi/v/chatgptpy.svg)](https://pypi.python.org/pypi/chatgptpy)
@@ -61,7 +64,7 @@ from pychatgpt import Chat, Options
 options = Options()
 
 # [New] Enable, Disable logs
-options.logs = True
+options.log = True
 
 # Track conversation
 options.track = True 
