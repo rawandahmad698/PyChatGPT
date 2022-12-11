@@ -20,13 +20,8 @@ __hm = Headers.mod
 
 def _called(r, *args, **kwargs):
     if r.status_code == 200 and 'json' in r.headers['Content-Type']:
-        flagged = r.json()['flagged'] if 'flagged' in r.json() else False
-        if flagged:
-            print(colorama.Fore.RED + ">> Flagged message detected. Please try again.")
-
-        blocked = r.json()['blocked'] if 'blocked' in r.json() else False
-        if blocked:
-            print(f"Blocked: {blocked}")
+        # TODO: Add a way to check if the response is valid
+        pass
 
 
 def __pass_mo(access_token: str, text: str):
