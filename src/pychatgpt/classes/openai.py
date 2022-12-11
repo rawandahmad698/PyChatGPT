@@ -409,9 +409,11 @@ class Auth:
             # Get path using os, it's in ./classes/auth.json
             path = os.path.dirname(os.path.abspath(__file__))
             path = os.path.join(path, "auth.json")
-            with open(path, "w+") as f:
+            with open(path, "r") as f:
                 content = f.read()
                 account_dict = {} if content == '' else json.loads(content)
+                f.close()
+            with open(path, "w") as f:
                 account_dict[email] = {"access_token": access_token, "expires_at": expiry}
                 f.write(json.dumps(account_dict))
 
