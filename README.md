@@ -139,6 +139,10 @@ is_expired = OpenAI.token_expired() # Returns True or False
 <details><summary>Change Log</summary>
 
 #### Update using `pip install chatgptpy --upgrade`
+### 1.0.7
+- Make a request to the mod endpoint first, otherwise a crippled version of the response is returned
+
+
 ### 1.0.6
 - New option to turn off logs. 
 - Better Error handling.
