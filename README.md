@@ -1,6 +1,18 @@
-# 🔥 PyChatGPT
-#### 😶‍🌫️ [Confirmed] OpenAI shadow-bans requests through <strong>bots/scrapers</strong>. This applies to all current scrapers/bots out there, but not with this script! 😎
+# Update December 12, 2022
 
+Yesterday, OpenAI added additional Cloudflare protections that make it more difficult to access the unofficial API.
+
+I'll be definitely updating this project to work with the latest changes. 
+
+Consider starring this repo and <a href="https://twitter.com/rawandshaswar">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
+
+Thanks.
+
+_Rawa._
+
+---
+
+# 🔥 PyChatGPT
 [Read More - How OpenAI filters requests made by bots/scrapers](https://github.com/rawandahmad698/PyChatGPT/discussions/103)
 
 [![Python](https://img.shields.io/badge/python-3.8-blue.svg)](https://img.shields.io/badge/python-3.8-blue.svg)
