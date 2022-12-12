@@ -4,7 +4,7 @@ Yesterday, OpenAI added additional Cloudflare protections that make it more diff
 
 I'll be definitely updating this project to work with the latest changes. 
 
-Consider starring this repo and <a href="https://twitter.com/rawandshaswar">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
+Consider **Watching** & **Starring** this repo and <a href="https://twitter.com/rawandshaswar">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a> to help support the project.
 
 Thanks.
 
