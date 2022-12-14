@@ -23,9 +23,9 @@ While you:
 
 I plan on allowing the same level of customization as PyChatGPT.   I’m running all of this on AWS, On money from my pocket. And the total cost is near $80 for a month. While we’re in a waitlist based model, I’ll maintain all the costs myself.  
 
-Go ahead and write “I want access” on #waitlist (First **2-8 ** people will be selected for the initial tryout)
+##### Go ahead and write “I want access” on #waitlist (First **2-8 ** people will be selected for the initial tryout)
 [Waitlist on Discord](https://discord.gg/Z2fpFKPE4j)
----
+
 
 # 🔥 PyChatGPT
 [Read More - How OpenAI filters requests made by bots/scrapers](https://github.com/rawandahmad698/PyChatGPT/discussions/103)
