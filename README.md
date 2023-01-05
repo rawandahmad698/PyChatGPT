@@ -1,30 +1,4 @@
-# Update December 14, 2022
-
-![Image](https://media.discordapp.net/attachments/1052243530627686410/1052571173407445142/gpt.png)
-**THE NEW CHATGPT API**
-
-Since they introduced Cloudflare on December 12. I have been trying to reverse engineer their new method. By first bypassing their Cloudflare page. When I was done, they Introduced Google reCAPTCHA when logging in, this made stuff a bit more complicated. So many things could go wrong in a 12 step process.
-
-I finally did it. It’s all done. I was unsure about publishing the code though. Because if they could patch the first one, they can definitely patch this new one. And I’d like to tell you. THEY ARE WATCHING.
-
-
-So I found a way to let you guys access their API without the overhead of Installing, Running code. We have an API now, You just make a GET request to the endpoint and It’ll return the ChatGPT response. 
-
-
-Behind the scenes: 
-- I solve the captcha for you
-- I bypass Cloudflare
-- I manage accounts
-- I rotate Cloudflare keys/ Access Tokens
-- I manage code dependencies, and make sure the code is up-to-date, and have the ability to fix the code in case they change their code 
-
-While you: 
-- Just make a GET request to an endpoint
-
-I plan on allowing the same level of customization as PyChatGPT.   I’m running all of this on AWS, On money from my pocket. And the total cost is near $80 for a month. While we’re in a waitlist based model, I’ll maintain all the costs myself.  
-
-##### Go ahead and write “I want access” on #waitlist (First **2-8 ** people will be selected for the initial tryout)
-[Waitlist on Discord](https://discord.gg/Z2fpFKPE4j)
+[Discord Discussion](https://discord.gg/MqeaZsy4F5)
 
 
 # 🔥 PyChatGPT
