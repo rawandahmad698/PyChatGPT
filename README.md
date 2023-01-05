@@ -1,4 +1,7 @@
 [Discord Discussion](https://discord.gg/MqeaZsy4F5)
+Current State: Not maintained. Not Working.
+
+Sorry guys! Really busy with private projects. This was very fun!
 
 
 # 🔥 PyChatGPT
