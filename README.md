@@ -5,7 +5,6 @@ Sorry guys! Really busy with private projects. This was very fun!
 
 
 # 🔥 PyChatGPT
-[Read More - How OpenAI filters requests made by bots/scrapers](https://github.com/rawandahmad698/PyChatGPT/discussions/103)
 
 [![Python](https://img.shields.io/badge/python-3.8-blue.svg)](https://img.shields.io/badge/python-3.8-blue.svg)
 [![PyPi](https://img.shields.io/pypi/v/chatgptpy.svg)](https://pypi.python.org/pypi/chatgptpy)
