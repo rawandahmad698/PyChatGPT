@@ -1,3 +1,10 @@
-from .main import Chat
-from .main import Options
-from .classes import openai as OpenAI
+'''
+pyChatGPT
+
+An unofficial Python wrapper for OpenAI's ChatGPT API
+'''
+
+
+from .pyChatGPT import ChatGPT
+
+__all__ = ['ChatGPT']
