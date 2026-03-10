@@ -28,7 +28,7 @@ from colorama import Fore
 colorama.init(autoreset=True)
 
 
-def token_expired() -> bool:
+def token_expired(email: str) -> bool:
     """
         Check if the creds have expired
         returns:
@@ -41,7 +41,7 @@ def token_expired() -> bool:
 
         with open(path, 'r') as f:
             creds = json.load(f)
-            expires_at = float(creds['expires_at'])
+            expires_at = float(creds[email]['expires_at'])
             if time.time() > expires_at + 3600:
                 return True
             else:
@@ -52,7 +52,7 @@ def token_expired() -> bool:
         return True
 
 
-def get_access_token() -> Tuple[str or None, str or None]:
+def get_access_token(email: str) -> Tuple[str or None, str or None]:
     """
         Get the access token
         returns:
@@ -65,7 +65,7 @@ def get_access_token() -> Tuple[str or None, str or None]:
 
         with open(path, 'r') as f:
             creds = json.load(f)
-            return creds['access_token'], creds['expires_at']
+            return creds[email]['access_token'], creds[email]['expires_at']
     except FileNotFoundError:
         return None, None
 
@@ -358,7 +358,7 @@ class Auth:
                 access_token = access_token.split('"')[0]
                 print(f"{Fore.GREEN}[OpenAI][8] {Fore.WHITE}Access Token: {Fore.GREEN}{access_token}")
                 # Save access_token
-                self.save_access_token(access_token=access_token)
+                self.save_access_token(email=self.email_address, access_token=access_token)
             else:
                 print(f"{Fore.GREEN}[OpenAI][8][CRITICAL] {Fore.WHITE}Access Token: {Fore.RED}Not found"
                       f" Auth0 did not issue an access token.")
@@ -386,7 +386,7 @@ class Auth:
                 json_response = response.json()
                 access_token = json_response['accessToken']
                 print(f"{Fore.GREEN}[OpenAI][9] {Fore.WHITE}Access Token: {Fore.GREEN}{access_token}")
-                self.save_access_token(access_token=access_token)
+                self.save_access_token(email=self.email_address, access_token=access_token)
             else:
                 print(f"{Fore.GREEN}[OpenAI][9] {Fore.WHITE}Access Token: {Fore.RED}Not found, "
                       f"Please try again with a proxy (or use a new proxy if you are using one)")
@@ -395,7 +395,7 @@ class Auth:
                   f"Please try again with a proxy (or use a new proxy if you are using one)")
 
     @staticmethod
-    def save_access_token(access_token: str, expiry: int or None = None):
+    def save_access_token(email: str, access_token: str, expiry: int or None = None):
         """
         Save access_token and an hour from now on CHATGPT_ACCESS_TOKEN CHATGPT_ACCESS_TOKEN_EXPIRY environment variables
         :param expiry:
@@ -409,8 +409,13 @@ class Auth:
             # Get path using os, it's in ./classes/auth.json
             path = os.path.dirname(os.path.abspath(__file__))
             path = os.path.join(path, "auth.json")
-            with open(path, "w") as f:
-                f.write(json.dumps({"access_token": access_token, "expires_at": expiry}))
+            with open(path, "r") as f:
+                content = f.read()
+                account_dict = {} if content == '' else json.loads(content)
+                f.close()
+                with open(path, "w") as file:
+                    account_dict[email] = {"access_token": access_token, "expires_at": expiry}
+                    file.write(json.dumps(account_dict))
 
             print(f"{Fore.GREEN}[OpenAI][8] {Fore.WHITE}Saved access token")
         except Exception as e:
