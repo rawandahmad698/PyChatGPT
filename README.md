@@ -1,9 +1,3 @@
-[Discord Discussion](https://discord.gg/MqeaZsy4F5)
-Current State: Not maintained. Not Working.
-
-Sorry guys! Really busy with private projects. This was very fun!
-
-
 # 🔥 PyChatGPT
 
 [![Python](https://img.shields.io/badge/python-3.8-blue.svg)](https://img.shields.io/badge/python-3.8-blue.svg)
@@ -13,8 +7,6 @@ Sorry guys! Really busy with private projects. This was very fun!
 *⭐️ Like this repo? please star & consider donating to keep it maintained*
 
 <a href="https://www.buymeacoffee.com/rawandahmed" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-
-*💡 If OpenAI change their API, I will fix it as soon as possible, so <mark>Watch</mark> the repo if you want to be notified*
 
 ### Features
 - [x] Save Conversations to a file
